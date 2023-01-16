@@ -34,7 +34,7 @@ bool check(int x, int y)
 
 int dfs(int x, int y)
 {
-    vis[x][y] = 1; //As now visited marked to 1
+    vis[x][y] = 1; //As now visited marked to 1https://github.com/yash-sonawane-0/Sublime_CP
     int ans = 1;   //As a cell is connected to itself
     for (int i = 0; i < 4; i++)
     {
