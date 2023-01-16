@@ -1,0 +1,164 @@
+//polynomial hash, binary search, linear search of min O(n log(n))
+//https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=284&locale=en
+
+
+//YashS
+#include <bits/stdc++.h>
+using namespace std;
+#define test              int T;cin>>T;while(T--)
+#define int               int64_t
+#define pb                push_back
+#define all(x)            (x).begin(),(x).end()
+#define rep(i,a,b)        for(int i=a;i<b;i++)
+#define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
+constexpr uint64_t MOD = (1ULL << 61) - 1;
+const int N = 1e6 + 7;
+
+void init_code() {
+#ifndef ONLINE_JUDGE
+    freopen("inputf.txt", "r", stdin);
+    freopen("outputf.txt", "w", stdout);
+#endif // ONLINE_JUDGE
+}
+
+
+// constexpr uint64_t MOD = (1ULL << 61) - 1;
+const uint64_t seed = chrono::system_clock::now().time_since_epoch().count();
+const uint64_t base = 31;
+
+uint64_t base_pow[N];
+int64_t modmul(uint64_t a, uint64_t b)
+{
+    uint64_t l1 = (uint32_t)a, h1 = a >> 32, l2 = (uint32_t)b, h2 = b >> 32;
+    uint64_t l = l1 * l2, m = l1 * h2 + l2 * h1, h = h1 * h2;
+    uint64_t ret = (l & MOD) + (l >> 61) + (h << 3) + (m >> 29) + (m << 35 >> 3) + 1;
+    ret = (ret & MOD) + (ret >> 61);
+    ret = (ret & MOD) + (ret >> 61);
+    return ret - 1;
+}
+
+void init() {
+    base_pow[0] = 1;
+    for (int i = 1; i < N; i++)
+    {
+        base_pow[i] = modmul(base_pow[i - 1], base);
+    }
+}
+
+struct PolyHash
+{
+    /// Remove suff vector and usage if reverse hash is not required for more speed
+    vector<int64_t> pref, suff;
+    PolyHash() {}
+
+    template <typename T>
+    PolyHash(const vector<T> &ar, const int factor)
+    {
+        if (!base_pow[0])
+            init();
+
+        int n = ar.size();
+        assert(n < N);
+        pref.resize(n + 3, 0), suff.resize(n + 3, 0);
+
+        for (int i = 1; i <= n; i++)
+        {
+            pref[i] = modmul(pref[i - 1], base) + ar[i - 1] - 96;
+            if (pref[i] >= MOD)
+                pref[i] -= MOD;
+        }
+
+        for (int i = n; i >= 1; i--)
+        {
+            suff[i] = modmul(suff[i + 1], base) + ar[i - 1] - 96;
+            if (suff[i] >= MOD)
+                suff[i] -= MOD;
+        }
+    }
+
+    PolyHash(string str, int factor)
+        : PolyHash(vector<char>(str.begin(), str.begin() + (int)str.size()), factor) {}
+
+    uint64_t get_hash(int l, int r)
+    {
+        int64_t h = pref[r + 1] - modmul(base_pow[r - l + 1], pref[l]);
+        return h < 0 ? h + MOD : h;
+    }
+
+    uint64_t rev_hash(int l, int r)
+    {
+        int64_t h = suff[l + 1] - modmul(base_pow[r - l + 1], suff[r + 2]);
+        return h < 0 ? h + MOD : h;
+    }
+};
+
+void yash()
+{
+    int n, k;
+    cin >> n >> k;
+    string s, t;
+    cin >> s >> t;
+  
+    // for(int i = 0; i < n - k + 1; i++){
+    //   cout << i << " -> " << s[i] << '\n';
+    //   // cout << s.substr(i, k / 2) << " " << s.substr(i + k / 2, k / 2) << "\n";
+    // }
+
+    PolyHash S = PolyHash(s, 977);
+    PolyHash S2 = PolyHash(s, 1337);
+    PolyHash T = PolyHash(t, 977);
+    PolyHash T2 = PolyHash(t, 1337);
+
+    // cout << S.get_hash(0, 0) << " " << T.get_hash(1, 1)  << "\n";
+    // cout << base_pow[1] << '\n';
+    map<int, int> mp;
+
+    for (int i = 0; i < n - k + 1; ++i) {
+        mp[T.get_hash(i, k + i - 1)] = 1;
+    }
+
+
+    int ans = 0;
+    for (int i = 0; i < n - k + 1; ++i) {
+        // string temp = s.substr(i, k);
+        // string tempT = t.substr(i, k);
+
+        // cout << temp << " -> " << S.get_hash(i, k + i - 1) << "\n";
+        // cout << tempT << " -> " << T.get_hash(i, k + i - 1) << "\n";
+
+        // cout << S2.get_hash(i, k + i - 1) << " " << T2.get_hash(i, k + i - 1)  << "\n";
+
+        int hash_first_half = S.get_hash(i, i + k / 2 - 1);
+        int hash_later_half = S.get_hash(i + k / 2, i + k - 1);
+        // int hash_first_halfT = T.get_hash(i, i + k / 2 - 1);
+        // int hash_later_halfT = T.get_hash(i + k / 2, i + k - 1);
+        // cout << hash_first_half << " " << hash_later_half << " | " << hash_first_halfT << " " << hash_later_halfT << "\n";
+
+        // hash_first_half = modmul(hash_first_half, base_pow[(k / 2)]);
+        hash_later_half = modmul(hash_later_half, base_pow[(k / 2)]); // ulta barabar araha, cause template mai r-l+1 ke pow use kiya hua hai
+
+
+        // cout << hash_first_half << " " << hash_later_half << " -> ";
+
+        int operatedHash = hash_first_half + hash_later_half;
+        if(operatedHash >= MOD){
+          operatedHash -= MOD;
+        }
+
+        // cout << operatedHash << "\n";
+        ans += (mp[operatedHash]);
+    }
+
+    cout << ans << "\n";
+}
+
+signed main()
+{
+    // init_code();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    test
+    yash();
+    return 0;
+}
