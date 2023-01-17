@@ -20,61 +20,78 @@ void init_code() {
 int n, m;
 vector<int> adj[N];
 vector<int> vis(N, 0);
+vector<int> clr(N, -1);
+int not_possible = 0;
+
+void dfs(int node) {
+  vis[node] = 1;
+  for(auto it : adj[node]) {
+    if(vis[it] == 1) continue;
+
+    if(clr[it] != -1) {
+      if(clr[it] == clr[node]){
+        not_possible = 1;
+      }
+      else {
+        dfs(it);
+      }
+    }
+    else {
+      clr[it] = (clr[node] ^ 1);
+      dfs(it);
+    }
+  }
+
+}
 
 void yash()
 {
   cin >> n >> m;
+  vector<pair<int, int>> vec;
+
   for(int i = 0; i < m; i++) {
     int u, v;
     cin >> u >> v;
+    vec.push_back({u, v});
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
 
-  queue<int> q;
-  q.push(1);
-  map<int, int> parent;
-  int gotIt = 0;
-  vis[1] = 1;
-
-  while(!q.empty()){
-    int node = q.front();
-    q.pop();
-
-    if(node == n){
-      gotIt = 1;
-      break;
-    }
-
-    for(auto it : adj[node]) {
-      if(vis[it] == 0) {
-        parent[it] = node;
-        vis[it] = 1;
-        q.push(it);
-      }
+  for(int i = 1; i <= n; i++) {
+    if(vis[i] == 0) {
+      clr[i] = 0;
+      dfs(i);
     }
   }
 
-  if(gotIt == 0) {
+  for(int i = 1; i <= n; i++){
+    vis[i] = 0;
+    if(clr[i] == -1) {
+      not_possible = 1;
+    }
+  }
+
+  // checking
+  for(int i = 0; i < m; i++){
+    if(clr[vec[i].first] == clr[vec[i].second]) {
+      not_possible = 1; 
+    }
+  }
+
+  if(not_possible == 1) {
     cout << "IMPOSSIBLE\n";
     return;
   }
 
-  int curr = n;
-  vector<int> ans;
-  ans.push_back(curr);
-  while(1) {
-    if(curr == 1){
-      break;
+  for(int i = 1; i <= n; i++){
+    if(clr[i] == -1) {
+      cout << "IMPOSSIBLE\n";
+      return;
     }
-    ans.push_back(parent[curr]);
-    curr = parent[curr];
+
+    cout << clr[i] + 1 << ' ';
   }
-
-  reverse(all(ans));
-  cout << ans.size() << '\n';
-  pVec(ans);
-
+  cout << "\n";
 }
 
 signed main()

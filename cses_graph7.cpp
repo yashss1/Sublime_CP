@@ -19,7 +19,29 @@ void init_code() {
 
 int n, m;
 vector<int> adj[N];
-vector<int> vis(N, 0);
+map<pair<int, int>, pair<int, int>> parent;
+map<pair<int, int>, int> vis;
+pair<int, int> temp = {-1, -1};
+
+
+int dx[] = {1, 0, -1, 0};
+int dy[] = {0, 1, 0, -1};
+bool check(int x, int y)
+{
+    if (x < 0 || y < 0 || x >= n || y >= m) // Checking boundaries
+        return false;
+    if (vis[{x, y}])
+        return false; // If visited returns false
+    if(adj[x][y] == '#') return false;
+    return true;
+}
+
+void dfs(pair<int, int> node, pair<int, int> par) {
+  vis[{node.first, node.second}] = 1;
+  parent[{node.first, node.second}] = {par.first, par.second};
+    
+
+}
 
 void yash()
 {
@@ -31,49 +53,23 @@ void yash()
     adj[v].push_back(u);
   }
 
-  queue<int> q;
-  q.push(1);
-  map<int, int> parent;
   int gotIt = 0;
-  vis[1] = 1;
-
-  while(!q.empty()){
-    int node = q.front();
-    q.pop();
-
-    if(node == n){
+  for(int i = 1; i <= n; i++) {
+    dfs(i, -1);
+    if(temp.first == -1 && temp.second == -1){
       gotIt = 1;
       break;
     }
-
-    for(auto it : adj[node]) {
-      if(vis[it] == 0) {
-        parent[it] = node;
-        vis[it] = 1;
-        q.push(it);
-      }
-    }
   }
 
-  if(gotIt == 0) {
+  if (gotIt == 0) {
     cout << "IMPOSSIBLE\n";
     return;
   }
 
-  int curr = n;
-  vector<int> ans;
-  ans.push_back(curr);
-  while(1) {
-    if(curr == 1){
-      break;
-    }
-    ans.push_back(parent[curr]);
-    curr = parent[curr];
-  }
+  while (1){
 
-  reverse(all(ans));
-  cout << ans.size() << '\n';
-  pVec(ans);
+  }
 
 }
 

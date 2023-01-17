@@ -43,7 +43,7 @@ void yash()
     adj[v].push_back(u);
   }
 
-  for(int i = 1; i <= n; i++){
+  for(int i = 1; i < n; i++){
     if(vis[i] == 0) {
         temp.clear();
         dfs(i);

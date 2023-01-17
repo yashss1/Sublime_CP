@@ -20,6 +20,22 @@ void init_code() {
 int n, m;
 vector<int> adj[N];
 vector<int> vis(N, 0);
+vector<int> parent(N, 0);
+pair<int, int> temp = {-1, -1};
+
+void dfs(int node, int par) {
+  vis[node] = 1;
+  parent[node] = par;
+  for(auto it : adj[node]) {
+    if(vis[it] == 1 && par != it) {
+      // cycle found
+      temp = {node, it};
+    } 
+    else if(vis[it] == 0) {
+      dfs(it, node);
+    }
+  }
+}
 
 void yash()
 {
@@ -31,48 +47,38 @@ void yash()
     adj[v].push_back(u);
   }
 
-  queue<int> q;
-  q.push(1);
-  map<int, int> parent;
   int gotIt = 0;
-  vis[1] = 1;
-
-  while(!q.empty()){
-    int node = q.front();
-    q.pop();
-
-    if(node == n){
-      gotIt = 1;
-      break;
-    }
-
-    for(auto it : adj[node]) {
-      if(vis[it] == 0) {
-        parent[it] = node;
-        vis[it] = 1;
-        q.push(it);
+  for(int i = 1; i <= n; i++) {
+      if(vis[i] == 0) {
+      dfs(i, -1);
+      if(temp.first != -1 && temp.second != -1){
+        gotIt = 1;
+        break;
       }
     }
   }
 
-  if(gotIt == 0) {
+  // cout << temp.first << " " << temp.second << '\n';
+  // return;
+
+  if (gotIt == 0) {
     cout << "IMPOSSIBLE\n";
     return;
   }
 
-  int curr = n;
   vector<int> ans;
+  int start = temp.first, curr = temp.second;
+  ans.push_back(start);
   ans.push_back(curr);
-  while(1) {
-    if(curr == 1){
-      break;
-    }
-    ans.push_back(parent[curr]);
-    curr = parent[curr];
+
+  while (start != curr){
+    int par = parent[curr];
+    ans.push_back(par);
+
+    curr = par;
   }
 
-  reverse(all(ans));
-  cout << ans.size() << '\n';
+  cout << ans.size() << "\n";
   pVec(ans);
 
 }
