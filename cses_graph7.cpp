@@ -9,7 +9,6 @@ using namespace std;
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 const int MOD = 1e9 + 7;
 const int N = 2e5 + 7;
-
 void init_code() {
 #ifndef ONLINE_JUDGE
   freopen("inputf.txt", "r", stdin);
@@ -18,58 +17,167 @@ void init_code() {
 }
 
 int n, m;
-vector<int> adj[N];
-map<pair<int, int>, pair<int, int>> parent;
 map<pair<int, int>, int> vis;
-pair<int, int> temp = {-1, -1};
+map<pair<int, int>, pair<int, int>> parent;
 
 
 int dx[] = {1, 0, -1, 0};
 int dy[] = {0, 1, 0, -1};
-bool check(int x, int y)
+vector<vector<char>> v;
+vector<vector<int>> dist[2];
+
+
+bool check(int x, int y, int curr_distance, int flag)
 {
     if (x < 0 || y < 0 || x >= n || y >= m) // Checking boundaries
         return false;
-    if (vis[{x, y}])
+    if (vis[{x, y}] == 1)
         return false; // If visited returns false
-    if(adj[x][y] == '#') return false;
+    if(v[x][y] == '#') return false;
+    if(dist[flag][x][y] < curr_distance)return false;
     return true;
 }
 
-void dfs(pair<int, int> node, pair<int, int> par) {
-  vis[{node.first, node.second}] = 1;
-  parent[{node.first, node.second}] = {par.first, par.second};
-    
+void bfs(int x, int y, int flag){ //flag = 0, bfs for M else bfs for A
+  queue<pair<pair<int, int>, int>> q; // {x, y, distance from root}
+  vector<pair<int, int>> visited;
 
-}
+  q.push({{x, y}, 0});
+  dist[flag][x][y] = 0;
+  vis[{x, y}] = 1;
+  visited.push_back({x, y});
 
-void yash()
-{
-  cin >> n >> m;
-  for(int i = 0; i < m; i++) {
-    int u, v;
-    cin >> u >> v;
-    adj[u].push_back(v);
-    adj[v].push_back(u);
-  }
+  while(!q.empty()){
+    pair<int, int> temp = q.front().first;
+    int distance = q.front().second;
+    q.pop();
 
-  int gotIt = 0;
-  for(int i = 1; i <= n; i++) {
-    dfs(i, -1);
-    if(temp.first == -1 && temp.second == -1){
-      gotIt = 1;
-      break;
+    for (int i = 0; i < 4; i++)
+    {
+      int X = temp.first + dx[i];
+      int Y = temp.second + dy[i];
+      if (!check(X, Y, distance + 1, flag)) 
+          continue;
+
+      vis[{X, Y}] = 1;
+      visited.push_back({X, Y});
+      parent[{X, Y}] = {temp.first, temp.second};
+      dist[flag][X][Y] =  distance + 1;
+      q.push({{X, Y}, distance + 1});
     }
   }
 
-  if (gotIt == 0) {
-    cout << "IMPOSSIBLE\n";
+  for(int i = 0; i < visited.size(); i++){
+    vis[{visited[i].first, visited[i].second}] = 0;
+  }
+}
+
+void bfsA(int x, int y) {
+
+}
+  
+void yash()
+{
+  cin >> n >> m;
+  v.assign(n, vector<char>(m));
+  dist[0].assign(n, vector<int>(m, 1000));
+  dist[1].assign(n, vector<int>(m, 1000));
+
+  for(int i = 0; i < n; i++) {
+    string s;
+    cin >> s;
+
+    for(int j = 0; j < m; j++) {
+      v[i][j] = s[j];
+    }
+  }
+
+  int ii, jj;
+  for(int i = 0; i < n; i++) {
+    for(int j = 0; j < m; j++) {
+      if(v[i][j] == 'M'){
+        bfs(i, j, 0);
+      }
+      if(v[i][j] == 'A')ii = i, jj = j;
+    }
+  }
+  bfs(ii, jj, 1);
+
+  // for(int i = 0; i < n; i++) {
+  //   for(int j = 0; j < m; j++) {
+  //     cout << dist[0][i][j] << ' ';
+  //   }
+  //   cout << "\n";
+  // }
+  // cout << '\n';
+  // for(int i = 0; i < n; i++) {
+  //   for(int j = 0; j < m; j++) {
+  //     cout << dist[1][i][j] << ' ';
+  //   }
+  //   cout << "\n";
+  // }
+
+
+  int gotIt = 0, iii, jjj;
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < m; j++) {
+      if(i == 0 || i == n - 1 || j == 0 || j == m - 1) {
+        if (dist[0][i][j] > dist[1][i][j]){
+          iii = i, jjj = j;
+          gotIt = 1;
+          goto end;
+        }
+      }
+    }
+  }
+
+  end:
+  if(gotIt == 0) {
+    cout << "NO\n";
+    return;
+  }
+  
+
+  if(ii == iii && jj == jjj) {
+    cout << "YES\n0\n";
     return;
   }
 
-  while (1){
+  string ans = "";
+  pair<int, int> curr = {iii, jjj};
+  while(1) {
+    pair<int, int> par = parent[curr];
 
+    int x = par.first, y = par.second;
+
+    if (x == curr.first) {
+        if(y > curr.second) {
+            ans += "L";
+        }
+        if(y < curr.second) {
+            ans += "R";
+        }
+    }
+    else {
+        if(x < curr.first) {
+            ans += "D";
+        }
+        if(x > curr.first) {
+            ans += "U";
+        }
+    }
+
+    if(x == ii && y == jj) {
+      break;
+    }
+
+    curr = par;
   }
+  reverse(all(ans));
+
+  cout << "YES\n";
+  cout << ans.size() << '\n';
+  cout << ans << '\n';
 
 }
 
