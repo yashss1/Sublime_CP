@@ -18,10 +18,35 @@ void init_code() {
 }
 
 
+// Longest path in directed acyclic graph
+// Here print longest path from 1 to n
 int n, m;
 vector<vector<int>> adj;
+vector<int> vis(N, 0), dp(N, -100000);
 
+void go(int node) {
+  vis[node] = 1;
+  for(auto it: adj[node]) {
+    if(!vis[it]) {
+      go(it);
+    }
+    dp[node] = max(dp[node], 1 + dp[it]);
+  }
 
+}
+
+vector<int> path;
+void trace(int node) {
+  int ans = dp[node];
+  for(auto it: adj[node]) {
+    int curr = 1 + dp[it];
+    if (curr == ans) {
+      path.push_back(it);
+      trace(it);
+      return;
+    }
+  }
+}
 
 void yash()
 {
@@ -34,6 +59,25 @@ void yash()
     vec.push_back({u, v});
     adj[u].push_back(v);
   }
+
+
+  dp[n] = 1;
+  for(int i = 1; i <= n; i++) {
+    if(!vis[i]) {
+      go(i);
+    }
+  }
+
+  path.push_back(1);
+  trace(1);
+
+  if(path[0] != 1 || path[path.size() - 1] != n) {
+    cout << "IMPOSSIBLE\n";
+    return;
+  }
+
+  cout << path.size() << '\n';
+  pVec(path);
 
 }
 
