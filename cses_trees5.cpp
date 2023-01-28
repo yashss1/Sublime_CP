@@ -19,36 +19,37 @@ void init_code() {
 
 int n, m;
 vector<vector<int>> adj;
-vector<int> vis(N, 0), dist(N, 0), children(N, 0);
+vector<int> ans(N, 0), subtreeAns(N, 0), subtreeSize(N, 0);
 
-void dfs_in_subtree(int node, int par) {
-  dist[node] = 1;
-  children[node] = 1;
-  for(auto it : adj[node]) {
-    if(it != par) {
-      dfs_in_subtree(it, node);
-      children[node] += children[it];
+ 
+void dfs(int src, int par)
+{
+    int numOfNodes = 1;
+    int ansForSubtree = 0;
+    for(int child : adj[src])
+    {
+        if(child != par)
+        {
+            dfs(child, src);
+            numOfNodes += subtreeSize[child];
+            ansForSubtree += (subtreeSize[child] + subtreeAns[child]);
+        }
     }
-  }
-
-  for(auto it : adj[node]) {
-    if(it != par) {
-      dfs_in_subtree(it, node);
-      dist[node] += (dist[it] + ((children[it] - 1)));  // sum of distances of node
-    }
-  }
+    subtreeSize[src] = numOfNodes;
+    subtreeAns[src] = ansForSubtree;
 }
-
-void dfs2(int node, int par) {
-  int t = dist[node];
-  for(auto it : adj[node]) {
-    if(it != par) {
-      dfs2(it, node);
-      if(par == 1) continue;
-      // dist[node] += (dist[par] - (dist[node] - 1) - children[it]);
-      // dist[node] += (dist[it] + ((children[it] - 1)));  // parent_sum - remaing child added
+ 
+ 
+// ans (c) = subans of (c) + (par ans) +  (nodes in parent tree except the subtree of (c))
+void go(int src, int par, int par_ans, int& totalNodes)
+{
+    ans[src] = subtreeAns[src] + (par_ans + (totalNodes - subtreeSize[src]));
+ 
+    for(int child : adj[src])
+    {
+        if(child != par)
+            go(child, src, ans[src] - (subtreeAns[child] + subtreeSize[child]), totalNodes);
     }
-  }
 }
  
 void yash()
@@ -64,13 +65,13 @@ void yash()
     adj[v].push_back(u);
   }
 
-  dfs_in_subtree(1, -1);
-  dfs2(1, -1);
-
-
+  dfs(1, 0);
+  go(1, 0, 0, n);
   for(int i = 1; i <= n; i++) {
-    cout << i << " -> " << dist[i] << '\n';
+    cout << ans[i] << ' ';
   }
+  cout << '\n';
+
 }
 
 signed main()
