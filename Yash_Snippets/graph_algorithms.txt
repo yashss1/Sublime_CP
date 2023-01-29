@@ -1,0 +1,6 @@
+Dijkstra : https://cses.fi/problemset/result/5308830/
+Floyd Warshall : https://cses.fi/problemset/result/5309114/
+Bellman Ford : https://cses.fi/problemset/result/5310132/
+Cycle detection in directed graph : https://cses.fi/problemset/result/5311017/
+Topological Sort : https://cses.fi/problemset/result/5311144/
+Number of ways from 1 to n : 
