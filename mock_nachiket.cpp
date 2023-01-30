@@ -111,6 +111,10 @@
 
 //YashS
 // https://www.hackerrank.com/contests/the-return-of-ab-yeh-kar-ke-dikhao/challenges/subsetsum-1
+/*
+10 15 1551
+1456 1742 897 1143 580 440 271 12 352 459
+*/
 
 #include <bits/stdc++.h>
 using namespace std;
