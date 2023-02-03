@@ -47,19 +47,13 @@ int dp[4][N][2*N];
 
 int go(int idx, int k, int prev) {
 	if(idx == n) {
-		int differ = 0;
-		if(dx[prev] == dy[prev]) differ++;
-		else differ+=2;
-
-		if(k - differ == 0) {
-			return 1;
-		}
+		int differ = 1;
+		if(dx[prev] != dy[prev]) differ++;
+		if(k - differ == 0) return 1;
 		return 0;
 	}
+	if(k <= 0) return 0;
 
-	if(k <= 0) {
-		return 0;
-	}
 
 	int &ans = dp[prev][idx][k];
 	if(ans != -1) {
@@ -67,7 +61,6 @@ int go(int idx, int k, int prev) {
 	}
 
 	ans = 0;
-
 	for(int i = 0; i < 4; i++) {
 		int change = 0;
 		if(prev == i) {}
