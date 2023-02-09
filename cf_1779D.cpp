@@ -68,13 +68,14 @@ void yash()
   for(int i = 0; i < n; i++) {
   	int t = st.top();
 
+  	// cout << i << " " << t << " " << b[i] << " | \n";
   	if(b[i] > mx && i != n - 1) {
   		part_of_mx++;
   		continue;
   	}
 
   	if(t > b[i]) {
-  		// cout << "add : " << b[i] << "| top : " << st.top() << '\n';
+  		// cout << "add : " << b[i] << " ; top : " << st.top() << '\n';
   		if(a[i] != b[i]) {
   			st.push(b[i]);
   		}
@@ -93,6 +94,10 @@ void yash()
   			// cout << "remove : " << t1 << '\n';
   			st.pop();
   		}
+  		if(st.top() != b[i]) {
+  			st.push(b[i]);
+  		}	
+  		// cout << "TOP " << st.top() << '\n';
   	}
   }
 
