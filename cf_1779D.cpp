@@ -30,17 +30,9 @@ void yash()
   int mx = INT_MIN, flag = 0;
   for(int i = 0; i < n; i++) {
   	cin >> b[i];
-  	if(a[i] != b[i]) {
-  		mx = max(mx, b[i]);
-  	}
-  	if(a[i] - b[i] < 0) {
-  		flag = 1;
-  	}
   }
 
-  b.push_back(mx);
-
-  int m, part_of_mx = 1;
+  int m;
   cin >> m;
   vector<int> x(m);
 
@@ -50,29 +42,23 @@ void yash()
   	mp[x[i]]++;
   }
 
-  if(mx == INT_MIN) { //same
-  	cout << "YES\n";
-  	return;
-  }
-
-  if(flag == 1) {
-  	cout << "NO\n";
-  	return;
-  }
-
   sort(all(x));
   stack<int> st;
-  st.push(mx);
 
   // 3 2 1 2 1 3
   for(int i = 0; i < n; i++) {
-  	int t = st.top();
+  	if(a[i] < b[i]) {
+  		cout << "NO\n";
+  		return;
+  	}
 
-  	// cout << i << " " << t << " " << b[i] << " | \n";
-  	if(b[i] > mx && i != n - 1) {
-  		part_of_mx++;
+  	if(st.empty()) {
+  		if(a[i] != b[i]) {
+  			st.push(b[i]);
+  		}
   		continue;
   	}
+  	int t = st.top();
 
   	if(t > b[i]) {
   		// cout << "add : " << b[i] << " ; top : " << st.top() << '\n';
@@ -82,9 +68,9 @@ void yash()
   		continue;
   	}
 
-  	if(t < b[i]) {
+  	if(t <= b[i]) {
   		while(!st.empty()) {
-  			if(st.top() >= b[i] || st.top() == mx)break;
+  			if(st.top() >= b[i])break;
   			int t1 = st.top();
   			if(mp[t1] <= 0) {
   				cout << "NO\n";
@@ -94,19 +80,25 @@ void yash()
   			// cout << "remove : " << t1 << '\n';
   			st.pop();
   		}
-  		if(st.top() != b[i]) {
+  		if(a[i] != b[i] && (st.empty() || st.top() != b[i])) {
   			st.push(b[i]);
   		}	
-  		// cout << "TOP " << st.top() << '\n';
+  	// 	// cout << "TOP " << st.top() << '\n';
   	}
   }
 
   while(!st.empty()) {
-  	if(mp[st.top()] < part_of_mx && st.top() == mx) {
+  	// cout << st.top() << '\n';
+  	// if(mp[st.top()] < part_of_mx && st.top() == mx) {
+  	// 	cout << "NO\n";
+  	// 	return;
+  	// }
+  	if(mp[st.top()] <= 0) {
   		cout << "NO\n";
   		return;
   	}
-  	break;
+    mp[st.top()]--;
+  	st.pop();
   }
 
   cout << "YES\n";
