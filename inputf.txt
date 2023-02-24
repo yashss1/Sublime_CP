@@ -1,3 +1,7 @@
-5 1 1
-1 2 3 4 5 
-1
+6
+khabarovsk 20
+moscow 10
+kazan 50
+kazan 35
+moscow 60
+khabarovsk 40
