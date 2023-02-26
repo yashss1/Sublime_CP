@@ -1,9 +1,1 @@
-4
-bbaba
-bb
-baaba
-ab
-asdfasdf
-fasd
-aa
-aa
+15 2
