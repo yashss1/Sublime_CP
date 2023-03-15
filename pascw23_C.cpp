@@ -17,43 +17,7 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-// Home decor
-void yash()
-{
-  int n, w, x, y;
-  cin >> n >> w >> x >> y;
-  vector<int> v(n);
-  for(int i = 0; i < n; i++) {
-  	cin >> v[i];
-  }
-
-  map<int, int> mp;
-  vector<int> hsh(n + 1, 0);
-  for(int i = 0; i < n; i++) {
-  	hsh[i + 1] = hsh[i] + v[i];
-  	mp[hsh[i + 1]] = 1;
-  }
-
-  // pVec(hsh);
-  for(int i = 0; i <= n; i++) {
-  	int curr = hsh[i];
-
-  	int w1 = curr + w;
-  	int w2 = w1 + x;
-  	int w3 = w2 + y;
-
-  	if(mp[w1] == 1 && mp[w2] == 1 && mp[w3] == 1) {
-  		cout << "YES\n";
-  		return;
-  	}
-
-  	// cout << i << " -> " <<  w1 << " " << w2 << " " << w3 << '\n';
-  }
-
-  cout << "NO\n";
-
-}
-
+ 
 signed main()
 {
   init_code();
