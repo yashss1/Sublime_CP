@@ -17,10 +17,32 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+vector<int> v(4);
+
+int go(int idx, int prev) {
+	if(idx == 4) {
+		return 0;
+	}
+
+	int c1 = 0, c2 = 0;
+	if(prev == 1) {
+		c2 = go(idx + 1, 0);
+	}
+	else {
+		c1 = v[idx] + go(idx + 1, 1);
+		c2 = go(idx + 1, 0);
+	}
+
+	return max({c1, c2});
+}
 void yash()
-{ 
-  string s;
-  cin >> s;
+{
+  for(int i = 0; i < 4; i++) {
+  	cin >> v[i];
+  }
+  int ans = go(0, 0);
+  cout << ans << "\n";
+
 }
 
 signed main()
@@ -29,7 +51,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

@@ -18,9 +18,45 @@ void init_code() {
 }
 
 void yash()
-{ 
-  string s;
-  cin >> s;
+{
+  int n, m;
+  cin >> n >> m; 
+  vector<int> a(n), b(m), c(m);
+
+  for(int i = 0; i < n; i++) {
+  	cin >> a[i];
+  }
+  for(int i = 0; i < m; i++) {
+  	cin >> b[i];
+  }
+  for(int i = 0; i < m; i++) {
+  	cin >> c[i];
+  }
+
+  int curr = 0, mn = INT_MAX, idx = 0;
+  for(int i = 0; i < m; i++) {
+  	int temp = a[0] / b[i];
+	if (a[0] % b[i]) {
+		temp++;
+	}
+	temp *= c[i];
+	if (temp < mn) {
+		mn = temp;
+		idx = i;
+	}
+  }
+
+  int ans = 0;
+  for(int i = 1; i < n; i++) {
+	int temp = a[i] / b[idx];
+	if (a[i] % b[idx]) {
+		temp++;
+	}
+	temp *= c[idx];
+	ans += temp;
+  }
+
+  cout << ans + mn << "\n";
 }
 
 signed main()

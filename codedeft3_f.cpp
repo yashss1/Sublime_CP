@@ -18,9 +18,9 @@ void init_code() {
 }
 
 void yash()
-{ 
-  string s;
-  cin >> s;
+{
+  int n;
+  cin >> n; 
 }
 
 signed main()

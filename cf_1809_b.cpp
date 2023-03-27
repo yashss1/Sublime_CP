@@ -18,9 +18,12 @@ void init_code() {
 }
 
 void yash()
-{ 
-  string s;
-  cin >> s;
+{
+  int n;
+  cin >> n;
+  double t = sqrtl(n - 1ll);
+  int ans = floor(sqrtl(n - 1ll));
+  cout<<ans<<"\n";
 }
 
 signed main()
@@ -29,7 +32,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

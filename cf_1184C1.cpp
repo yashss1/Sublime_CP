@@ -54,7 +54,7 @@ void yash()
   						}
   					}
 
-  					if(curr == 4 * n && sz >= n) {
+  					if(curr == 4 * n && sz >= 4 * sz) {
   						for(int pq = 0; pq < 4 * n + 1; pq++) {
   							if(vis[pq] == 0) {
   								cout << v[pq].first << " " << v[pq].second << '\n';

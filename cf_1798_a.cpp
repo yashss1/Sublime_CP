@@ -18,9 +18,37 @@ void init_code() {
 }
 
 void yash()
-{ 
-  string s;
-  cin >> s;
+{
+  int n;
+  cin >> n; 
+  vector<int> a(n), b(n);
+  int mx1 = INT_MIN, mx2 = INT_MIN;
+  for(int i = 0; i < n; i++) {
+  	cin >> a[i];
+  }
+  for(int i = 0; i < n; i++) {
+  	cin >> b[i];
+  	if(a[i] > b[i]) {
+  		swap(a[i], b[i]);
+  	}
+  	mx1 = max(mx1, a[i]);
+
+  	mx2 = max(mx2, b[i]);
+  }
+
+  // sort(all(a));
+  // sort(all(b));
+  // pVec(a);
+  // pVec(b);
+
+  if(mx1 == a[n - 1] && mx2 == b[n - 1]) {
+  	cout << "Yes\n";
+  	return;
+  }
+
+  cout << "No\n";
+
+
 }
 
 signed main()
@@ -29,7 +57,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

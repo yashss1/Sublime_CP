@@ -18,9 +18,35 @@ void init_code() {
 }
 
 void yash()
-{ 
+{
   string s;
   cin >> s;
+  map<int, int> mp;
+  for(auto it: s) {
+  	mp[it]++;
+  } 
+
+  if(mp.size() == 1) {
+  	cout << "-1\n";return;
+  }
+
+  if(mp.size() == 4) {
+  	cout << "4\n";return;
+  }
+
+  if(mp.size() == 2) {
+  	vector<int> res;
+    for(auto i:mp){
+    	res.pb(i.second);
+    }
+    if(res[0]==2){
+    	cout<<"4\n";return;
+    }
+  	cout << "6\n";return;
+  }
+
+  cout << "4\n";
+
 }
 
 signed main()
@@ -29,7 +55,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }
