@@ -19,44 +19,48 @@ void init_code() {
 
 void yash()
 {
-  int n, m;
-  cin >> n >> m; 
-  vector<int> a(n), b(m), c(m);
-
-  for(int i = 0; i < n; i++) {
-  	cin >> a[i];
-  }
-  for(int i = 0; i < m; i++) {
-  	cin >> b[i];
-  }
-  for(int i = 0; i < m; i++) {
-  	cin >> c[i];
+  int n;
+  cin >> n; 
+  if(n % 2 == 0) {
+  	cout << "-1\n";
+  	return;
   }
 
-  int curr = 0, mn = INT_MAX, idx = 0;
-  for(int i = 0; i < m; i++) {
-  int temp = a[0] / b[i];
-	if (a[0] % b[i]) {
-		temp++;
-	}
-	temp *= c[i];
-	if (temp < mn) {
-		mn = temp;
-		idx = i;
-	}
+  int n1 = n;
+
+  int t = log2(n1);
+  // cout << t << '\n';
+  vector<int> ans;
+  while(n > 1){
+    int temp1 = ((n + 1 ) / 2);
+    int temp2 = ((n - 1 ) / 2);
+    if(((n + 1 ) / 2) % 2 == 1){
+      n = temp1;
+      ans.pb(1);
+      continue;
+    }
+
+    if(((n - 1 ) / 2) % 2 == 1){
+      n = temp2;
+      ans.pb(2);
+      continue;
+    }
+
+    break;
   }
 
-  int ans = 0;
-  for(int i = 1; i < n; i++) {
-	int temp = a[i] / b[idx];
-	if (a[i] % b[idx]) {
-		temp++;
-	}
-	temp *= c[idx];
-	ans += temp;
+  if(n == 1) {
+  	if(ans.size() > 40) {
+  		cout << "-1\n";
+  		return;
+  	}
+  	reverse(ans.begin(), ans.end());
+  	cout << ans.size() << '\n';
+  	pVec(ans);
+  	return;
   }
+  cout << "-1\n";
 
-  cout << ans + mn << "\n";
 }
 
 signed main()
@@ -65,7 +69,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

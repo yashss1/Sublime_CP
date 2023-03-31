@@ -19,44 +19,20 @@ void init_code() {
 
 void yash()
 {
-  int n, m;
-  cin >> n >> m; 
-  vector<int> a(n), b(m), c(m);
-
+  int n;
+  cin >> n; 
+  vector<int> v(n);
   for(int i = 0; i < n; i++) {
-  	cin >> a[i];
-  }
-  for(int i = 0; i < m; i++) {
-  	cin >> b[i];
-  }
-  for(int i = 0; i < m; i++) {
-  	cin >> c[i];
+  	cin >> v[i];
   }
 
-  int curr = 0, mn = INT_MAX, idx = 0;
-  for(int i = 0; i < m; i++) {
-  int temp = a[0] / b[i];
-	if (a[0] % b[i]) {
-		temp++;
-	}
-	temp *= c[i];
-	if (temp < mn) {
-		mn = temp;
-		idx = i;
-	}
+  for(int i = 1; i <= n; i++) {
+  	if(v[i - 1] <= i) {
+  		cout << "YES\n";
+  		return;
+  	}
   }
-
-  int ans = 0;
-  for(int i = 1; i < n; i++) {
-	int temp = a[i] / b[idx];
-	if (a[i] % b[idx]) {
-		temp++;
-	}
-	temp *= c[idx];
-	ans += temp;
-  }
-
-  cout << ans + mn << "\n";
+  cout << "NO\n";
 }
 
 signed main()
@@ -65,7 +41,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

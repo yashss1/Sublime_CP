@@ -42,7 +42,7 @@ int go(int curr, int parent, bool taken) {
 			block2 += go(child, curr, false);
 		}
 	
-	if (block2 == 0) {
+		if (block2 == 0) {
         return v[curr];
     }
 
