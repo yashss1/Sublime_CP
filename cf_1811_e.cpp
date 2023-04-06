@@ -18,14 +18,14 @@ void init_code() {
 }
 
 string a, b;
-int dp[2][2][20];
+int dp[2][20];
 
-int go(int idx, int edgeBottom, int edgeTop) {
+int go(int idx, int edgeTop) {
     if (idx == a.size()) {
-        return 0;
+        return 1;
     }
  
-    int &ans = dp[edgeBottom][edgeTop][idx];
+    int &ans = dp[edgeTop][idx];
     if (ans != -1) {
         return ans;
     }
@@ -33,10 +33,10 @@ int go(int idx, int edgeBottom, int edgeTop) {
     ans = 0;
  
     for (int i = 0; i < 10; i++) {
-        if (edgeBottom && i < a[idx] - '0')continue;
         if (edgeTop && i > b[idx] - '0')continue;
+        if(i == 4) continue;
  
-        ans += ((i == 4) ? 1 : 0) + go(idx + 1, edgeBottom && (i == a[idx] - '0'), edgeTop && (i == b[idx] - '0'));
+        ans += go(idx + 1, edgeTop && (i == b[idx] - '0'));
     }
     return ans;
 }
@@ -54,66 +54,23 @@ int solve2(int n) {
     int ans = 0;
  
     for (int i = 0; i < 10; i++) {
-        if (i < a[0] - '0')continue;
         if (i > b[0] - '0')continue;
+        if(i == 4) continue;
  
-        int t = ((i == 4) ? 1 : 0) +  go(1, i == a[0] - '0', i == b[0] - '0');
+        int t = go(1, i == b[0] - '0');
         ans += t;
     }
 
-    return ans;
+    return ans - 1; // -1 for 0
 }
-
-int solve(int n) {
-	int temp = 0;
-
-	for(int i = 1; i <= n; i++) {
-  		string s = to_string(i);
-  		int flag = 1;
-  		for(auto it: s) {
-  			if(it == '4') {
-  				flag = 0;
- 	 		}
- 	 	}
- 	 	if(flag == 0) {
- 	 		// cout << i << '\n';
- 	 		temp++;
-  		}
- 	}
- 	return temp;
-}
-
-// https://www.geeksforgeeks.org/count-numbers-from-1-to-n-that-have-4-as-a-a-digit/
-vector<int> power(19, 0), A(30);
-int countNumbersWith4(int n)
-{
-   if (n < 4)
-      return 0;
-   int d = log10l(n);
-
-   // cout << d << '\n';
-   d = max(d, 0ll);
-   A[0] = 0, A[1] = 1;
-   for (int i=2; i<=d; i++)
-      A[i] = (int)(A[i-1]*9ll) + (int)ceil(power[i - 1]);
-
-   int p = (int)ceil((int)power[d]);
- 
-   int msd = n/p;
-   if (msd == 4)
-      return (msd)*A[d] + (n%p) + 1ll;
-   if (msd > 4)
-      return (int)(msd-1ll)*A[d] + p + countNumbersWith4(n%p);
-   return (int)(msd)*A[d] + countNumbersWith4(n%p);
-}
-
 
 void yash()
 {
   int n;
   cin >> n; 
 
-  // cout << 1e13 - countNumbersWith4(1e13) << "\n";
+  // cout << 1e13 - countNumbersWith4(1e13) << "\n"; // this function was from gfg
+  // in contest digit dp code not written, was submitted by [pict]
   // return;
   // for(int i = 1; i <= 100; i++) {
   // 	cout << i << " -> " << solve(i) << " " << solve2(i) << '\n';
@@ -124,7 +81,7 @@ void yash()
   int l = 0, r = 1e14;
   while(l <= r) {
   	int mid = (l) + ((r - l) / 2);
-  	if((mid - countNumbersWith4(mid)) >= n) {
+  	if((solve2(mid)) >= n) {
   		r = mid - 1;
   		temp = mid;
   	}
@@ -142,11 +99,6 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  power[0] = 1;
-  for(int i=1; i<19; i++){
-    power[i] = power[i-1] * 10LL;
-  }
-
   test
   yash();
   return 0;
