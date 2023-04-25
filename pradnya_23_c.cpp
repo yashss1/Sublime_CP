@@ -17,39 +17,50 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int n, h, k;
+vector<int> d(N), t(N);
+
+int solve(int mid) {
+	int curr = 0;
+	for(int i = 0; i < n; i++) {
+		if(k * (i + 1) > mid) {
+			break;
+		}
+		cout << i << " " << curr << ' ';
+		int tt = ((min(i + 1, mid) / t[i]) * d[i]);
+		cout << tt << '\n';
+		curr += tt;
+	}
+	if(curr > h) {
+		return 0;
+	}
+	return 1;
+}
+
 void yash()
 {
-  int p, q, l, r;
-  cin >> p >> q >> l >> r; 
-  vector<pair<int, int>> a, b;
-  for(int i = 0; i < p; i++) {
-    int x, y;
-    cin >> x >> y;
-    a.push_back({x, y});
+  cin >> n >> h >> k; 
+  for(int i = 0; i < n; i++) {
+  	cin >> d[i];
+  }
+  for(int i = 0; i < n; i++) {
+  	cin >> t[i];
   }
 
-  for(int i = 0; i < q; i++) {
-    int x, y;
-    cin >> x >> y;
-    b.push_back({x, y});
-  }
-
-
+  cout << solve(6) << '\n';
+  return;
+  int l = 0, r = (k * n);
   int ans = 0;
-  for(int t = l; t <= r; t++) {
-    // is t possible? 
-    int flag = 0;
-    for(int i = 0; i < p; i++) {
-        for(int j = 0; j < q; j++) {
-            if((b[j].first + t <= a[i].first && b[j].second + t >= a[i].first) ||
-                        (b[j].first + t >= a[i].first && b[j].first + t <= a[i].second)) {
-                flag = 1;
-            }
-        }
-    }
-
-    ans += flag;
-  } 
+  while(l <= r) {
+  	int mid = (l + r) / 2;
+  	if(solve(mid)) {
+  		l = mid + 1;
+  		ans = mid;
+  	}
+  	else {
+  		r = mid - 1;
+  	}
+  }
 
   cout << ans << '\n';
 }
@@ -60,7 +71,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

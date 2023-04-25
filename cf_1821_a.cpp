@@ -19,39 +19,31 @@ void init_code() {
 
 void yash()
 {
-  int p, q, l, r;
-  cin >> p >> q >> l >> r; 
-  vector<pair<int, int>> a, b;
-  for(int i = 0; i < p; i++) {
-    int x, y;
-    cin >> x >> y;
-    a.push_back({x, y});
+  string s;
+  cin >> s;
+   if(s[0] == '0') {
+  	cout << "0\n";
+  	return;
   }
 
-  for(int i = 0; i < q; i++) {
-    int x, y;
-    cin >> x >> y;
-    b.push_back({x, y});
+  int ans = 1, flag = 0;
+  for(int i = 0; i < s.size(); i++) {
+  	if(i == 0 && s[i] == '?') {
+  		flag = 1;
+  		ans *= 9;
+  	}
+  	else if(s[i] == '?') {
+  		flag = 1;
+  		ans *= 10;
+  	}
   }
 
-
-  int ans = 0;
-  for(int t = l; t <= r; t++) {
-    // is t possible? 
-    int flag = 0;
-    for(int i = 0; i < p; i++) {
-        for(int j = 0; j < q; j++) {
-            if((b[j].first + t <= a[i].first && b[j].second + t >= a[i].first) ||
-                        (b[j].first + t >= a[i].first && b[j].first + t <= a[i].second)) {
-                flag = 1;
-            }
-        }
-    }
-
-    ans += flag;
-  } 
+  if(flag == 0) {
+  	cout << "1\n";return;
+  }
 
   cout << ans << '\n';
+
 }
 
 signed main()
@@ -60,7 +52,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }
