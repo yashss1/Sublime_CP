@@ -7,8 +7,8 @@ using namespace std;
 #define all(x)            (x).begin(),(x).end()
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
-const int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int MOD = 1e9 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -19,39 +19,9 @@ void init_code() {
 
 void yash()
 {
-  int p, q, l, r;
-  cin >> p >> q >> l >> r; 
-  vector<pair<int, int>> a, b;
-  for(int i = 0; i < p; i++) {
-    int x, y;
-    cin >> x >> y;
-    a.push_back({x, y});
-  }
-
-  for(int i = 0; i < q; i++) {
-    int x, y;
-    cin >> x >> y;
-    b.push_back({x, y});
-  }
-
-
-  int ans = 0;
-  for(int t = l; t <= r; t++) {
-    // is t possible? 
-    int flag = 0;
-    for(int i = 0; i < p; i++) {
-        for(int j = 0; j < q; j++) {
-            if((b[j].first + t <= a[i].first && b[j].second + t >= a[i].first) ||
-                        (b[j].first + t >= a[i].first && b[j].first + t <= a[i].second)) {
-                flag = 1;
-            }
-        }
-    }
-
-    ans += flag;
-  } 
-
-  cout << ans << '\n';
+  int n;
+  cin >> n;
+  cout << "YASH\n";
 }
 
 signed main()
