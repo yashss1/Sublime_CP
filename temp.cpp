@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+const int N = 1e3 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,95 +17,105 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int n, m, s, t;
 vector<int> adj[N];
-vector<int> v(N);
-vector<int> vis(N + 1, 0), cost(N + 1, 0), dp(N + 1, 0);
-int mx;
+vector<int> v(2);
+vector<int> dist[2];
+vector<int> vis(N, 0);
 
-void dfs(int node, int cst) {
+int dfs(int node, int dest) {
+  if (node == v[dest]) {
+    return 0;
+  }
+
   vis[node] = 1;
-  cost[node] = cst;
-  mx = max(mx, cost[node]);
+  int ans = INT_MAX;
+
+  if (dist[dest][node] != INT_MAX) {
+    return dist[dest][node];
+  }
+
   for (auto it : adj[node]) {
     if (vis[it] == 0) {
-      dfs(it, cst + v[it]);
+      ans = min(ans, 1 + dfs(it, dest));
     }
   }
+  dist[dest][node] = ans;
+  return ans;
 }
 
-int ans = 0;
-void dfs2(int node, int par) {
-  vector<int> temp;
-  for (auto it : adj[node]) {
-    if (it != par) {
-      dfs2(it, node);
-      temp.push_back(it);
-    }
-  }
-
-  if (temp.size() == 0) {
-    // ans += (mx - cost[node]);
-    dp[node] = (mx - cost[node]);
-  }
-  else if (temp.size() == 2) {
-    ans += (abs(dp[temp[0]] - dp[temp[1]]));
-    dp[node] = min(dp[temp[0]], dp[temp[1]]);
-  }
-  else {
-    assert(false);
-  }
-}
 
 void yash()
 {
-  int n;
-  cin >> n;
-  ans = 0, mx = INT_MIN;
-  for (int i = 2; i <= n; i++) {
-    cin >> v[i];
-  }
-  if (ceil(log2(n + 1)) != floor(log2(n + 1))) {
-    // cout << n << '\n';
-    // return;
-    assert(false);
-  }
+  cin >> n >> m >> s >> t;
+  v[0] = s, v[1] = t;
+  dist[0].assign(n + 2, INT_MAX);
+  dist[1].assign(n + 2, INT_MAX);
 
-  dp.assign(N, 0);
-  cost.assign(N, 0);
-  vis.assign(N, 0);
+  map<pair<int, int>, int> mp;
+  for (int i = 0; i < m; i++) {
+    int u, v;
+    cin >> u >> v;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+    if (u > v) {
+      swap(u, v);
+    }
+    mp[ {u, v}] = 1;
+  }
+  dist[0][s] = 0;
+  dist[1][t] = 0;
 
-  for (int i = 0; i <= n + 2; i++) {
-    adj[i].clear();
+
+  for (int i = 1; i <= n; i++) {
+    vis.assign(n + 1, 0);
+    dfs(i, 0);
   }
 
   for (int i = 1; i <= n; i++) {
-    if (i * 2 <= n) {
-      adj[i].push_back(i * 2);
-      adj[i * 2].push_back(i);
-    }
-    if ((i * 2) + 1 <= n) {
-      adj[i].push_back((i * 2) + 1);
-      adj[(i * 2) + 1].push_back(i);
+    vis.assign(n + 1, 0);
+    dfs(i, 1);
+  }
+
+
+  // for (int i = 1; i <= n; i++) {
+  //  cout << i << " -> " << dist[0][i] << '\n';
+  // } cout << '\n';
+  // for (int i = 1; i <= n; i++) {
+  //  cout << i << " -> " << dist[1][i] << '\n';
+  // } cout << '\n';
+
+  int temp = dist[1][s];
+  int res = 0;
+  for (int i = 1; i <= n; i++) {
+    for (int j = i + 1; j <= n; j++) {
+      // path -> s -> i -> j -> t;
+      if (mp[ {i, j}] == 1) continue;
+      int ans = INT_MAX;
+      int t1 = dist[0][i], t2 = 1, t3 = dist[1][j];
+      ans = min(ans, t1 + t2 + t3);
+      t1 = dist[0][j], t2 = 1, t3 = dist[1][i];
+      ans = min(ans, t1 + t2 + t3);
+
+
+      if (ans >= temp) {
+        // cout << i << " -> " << j << " = " << ans << '\n';
+        res++;
+      }
     }
   }
 
-  dfs(1, 0);
-  // cout << mx << '\n';
-  // for (int i = 1; i <= n; i++) {
-  //   cout << i << " -> " << cost[i] << "\n";
-  // }
-  // cout << '\n';
-  dfs2(1, -1);
-  cout << ans << '\n';
+  cout << res << '\n';
+
 }
 
 signed main()
 {
-  init_code();
+  // init_code();
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  test
+  // test
   yash();
   return 0;
 }
