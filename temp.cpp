@@ -12,110 +12,124 @@ const int N = 1e3 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-  freopen("inputf.txt", "r", stdin);
-  freopen("outputf.txt", "w", stdout);
+    freopen("inputf.txt", "r", stdin);
+    freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
-int n, m, s, t;
-vector<int> adj[N];
-vector<int> v(2);
-vector<int> dist[2];
-vector<int> vis(N, 0);
-
-int dfs(int node, int dest) {
-  if (node == v[dest]) {
-    return 0;
-  }
-
-  vis[node] = 1;
-  int ans = INT_MAX;
-
-  if (dist[dest][node] != INT_MAX) {
-    return dist[dest][node];
-  }
-
-  for (auto it : adj[node]) {
-    if (vis[it] == 0) {
-      ans = min(ans, 1 + dfs(it, dest));
+int isPrime(int n) {
+    rep(i, 2, ceil(sqrt(n)) + 1) {
+        if (n % i == 0)return 0;
     }
-  }
-  dist[dest][node] = ans;
-  return ans;
+    return 1;
+}
+
+int isPow(int n) {
+    while (n > 1) {
+        if (n % 3 == 1) {
+            return 0;
+        }
+        n /= 3;
+    }
+    return (n == 1);
+}
+
+vector<int> v;
+
+int dp[N];
+int go(int idx) {
+    if (idx >= 1000) {
+        return 0;
+    }
+    if (idx == 1000) {
+        return 0;
+    }
+
+    int &ans = dp[idx];
+    if (ans != -1) {
+        return ans;
+    }
+    int c1 = v[idx] + go(idx + 1);
+    int c2 = v[idx] + go(idx + 2);
+
+    return ans = min({c1, c2});
 }
 
 
 void yash()
 {
-  cin >> n >> m >> s >> t;
-  v[0] = s, v[1] = t;
-  dist[0].assign(n + 2, INT_MAX);
-  dist[1].assign(n + 2, INT_MAX);
+    // int n;
+    // cin >> n;
+    // int ans = -1;
+    // int i = 2;
+    // while (n > 0) {
+    //     string s = to_string(i);
+    //     string s1 = s;
+    //     reverse(all(s));
+    //     int t = stoi(s);
 
-  map<pair<int, int>, int> mp;
-  for (int i = 0; i < m; i++) {
-    int u, v;
-    cin >> u >> v;
-    adj[u].push_back(v);
-    adj[v].push_back(u);
-    if (u > v) {
-      swap(u, v);
+    //     if (isPrime(t) && isPrime(i) && s != s1) {
+    //         ans = i;
+    //         n--;
+    //     }
+    //     i++;
+    // }
+
+    // cout << ans << '\n';
+
+    // int n;
+    // cin >> n;
+
+    // int k = 0;
+    // for (int i = 1; i <= n; i++) {
+    //     int sum = 0;
+    //     for (int j = 0; j < i; j++) {
+    //         sum += k;
+    //         k += 2;
+    //     }
+    //     if (i == n) {
+    //         cout << sum << '\n';
+    //     }
+    // }
+
+    // int n = 1261;
+    // while (1) {
+    //     string s = to_string(n);
+    //     vector<int> v;
+    //     if (s.size() % 2 == 0) {
+    //         if (isPow(n)) {
+
+    //         }
+    //     }
+    //     n++;
+    // }
+
+    memset(dp, -1, sizeof(dp));
+
+    int k = 2;
+    v.push_back(k);
+    while (v.size() < 1000) {
+        if (isPrime(k)) {
+            v.push_back(k);
+        }
+        k++;
     }
-    mp[ {u, v}] = 1;
-  }
-  dist[0][s] = 0;
-  dist[1][t] = 0;
 
+    int ans = go(0);
+    int ans1 = go(1);
 
-  for (int i = 1; i <= n; i++) {
-    vis.assign(n + 1, 0);
-    dfs(i, 0);
-  }
-
-  for (int i = 1; i <= n; i++) {
-    vis.assign(n + 1, 0);
-    dfs(i, 1);
-  }
-
-
-  // for (int i = 1; i <= n; i++) {
-  //  cout << i << " -> " << dist[0][i] << '\n';
-  // } cout << '\n';
-  // for (int i = 1; i <= n; i++) {
-  //  cout << i << " -> " << dist[1][i] << '\n';
-  // } cout << '\n';
-
-  int temp = dist[1][s];
-  int res = 0;
-  for (int i = 1; i <= n; i++) {
-    for (int j = i + 1; j <= n; j++) {
-      // path -> s -> i -> j -> t;
-      if (mp[ {i, j}] == 1) continue;
-      int ans = INT_MAX;
-      int t1 = dist[0][i], t2 = 1, t3 = dist[1][j];
-      ans = min(ans, t1 + t2 + t3);
-      t1 = dist[0][j], t2 = 1, t3 = dist[1][i];
-      ans = min(ans, t1 + t2 + t3);
-
-
-      if (ans >= temp) {
-        // cout << i << " -> " << j << " = " << ans << '\n';
-        res++;
-      }
-    }
-  }
-
-  cout << res << '\n';
+    cout << min(ans, ans1) << '\n';
+    // pVec(v);
 
 }
 
 signed main()
 {
-  // init_code();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0);
-  cout.tie(0);
-  // test
-  yash();
-  return 0;
+    init_code();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    // test
+    yash();
+    return 0;
 }
