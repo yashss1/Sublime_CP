@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 2e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,17 +17,20 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-int n;
-vector<int> v(N);
-
 void yash()
 {
-	cin >> n;
-	for (int i = 0; i < n; i++) {
+	int n, m;
+	cin >> n >> m;
+	vector<int> v(m);
+	int sum = 0;
+	for (int i = 0; i < m; i++) {
 		cin >> v[i];
+		sum += v[i];
 	}
 
+	sum = (n * (n + 1) / 2) - sum;
 
+	cout << sum << "\n";
 }
 
 signed main()
@@ -36,7 +39,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }
