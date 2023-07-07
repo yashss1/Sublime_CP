@@ -17,67 +17,77 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-struct Node {
-    int val;
-    Node* left, *right;
-    string res;
-    Node(int x) {
-        left = nullptr;
-        right = nullptr;
-        val = x;
-        res = "";
+
+// BEST DIGIT DP && BITMASK DP QUESTION....
+string l, r;
+int n;
+int x, y;
+
+// mask ith bit unset, if even times, else odd times
+int dp[2][2][2][152][(1 << 10)];
+
+int go(int idx, int edgeBottom, int edgeTop, int mask, int nonZeroTaken) {
+    if (idx == n) {
+        int yy = 0;
+        for (int i = 0; i < 10; i++) {
+            if (!(mask & (1 << i))) {
+                yy++;
+            }
+        }
+
+        return (10ll - yy == x && yy == y && nonZeroTaken);
     }
-};
 
-map<string, int> mp;
-string dfs(Node* node) {
-    if (node == nullptr) {
-        return "";
+
+    int &ans = dp[nonZeroTaken][edgeTop][edgeBottom][idx][mask];
+    if (ans != -1) {
+        return ans;
     }
 
-    string curr = to_string(node -> val);
-    string s1 = dfs(node -> left);
-    string s2 = dfs(node -> right);
-    s1 += curr;
-    s1 += s2;
+    ans = 0;
+    for (int i = 0; i < 10; i++) {
+        if (edgeTop && i > r[idx] - '0') continue;
+        if (edgeBottom && i < l[idx] - '0') continue;
 
-    (node -> res) = s1;
-    mp[s1]++;
+        int newMask = mask;
+        if (nonZeroTaken || (i != 0)) {
+            newMask ^= (1 << i);
+        }
 
-    return s1;
+        ans += go(idx + 1, (edgeBottom && i == l[idx] - '0'), (edgeTop && i == r[idx] - '0'), newMask, (nonZeroTaken || (i != 0)));
+        ans %= MOD;
+    }
+
+    return ans;
 }
 
 void yash()
 {
-    int x;
-    cin >> x;
-    Node* root = new Node(1);
-    // Node* leftChild = new Node(89);
-    // Node* rightChild = new Node(69);
-    // root -> right = rightChild;
-    // cout << (root->right->val) << '\n';
+    cin >> l >> r;
+    string s(r.size() - l.size(), '0');
+    reverse(l.begin(), l.end());
+    l += s;
+    reverse(l.begin(), l.end());
+    n = l.size();
 
-    Node* n1 = new Node(2);
-    Node* n2 = new Node(2);
-    root -> left = n1;
-    root -> right = n2;
+    cin >> y >> x;
 
-    Node* n3 = new Node(4);
-    Node* n4 = new Node(5);
-    n1 -> left = n3;
-    n1 -> right = n4;
-
-    n3 = new Node(4);
-    n4 = new Node(5);
-    n2 -> left = n3;
-    n2 -> right = n4;
-
-    dfs(root);
+    memset(dp, -1, sizeof(dp));
 
     int ans = 0;
-    for (auto it : mp) {
-        ans += (it.second * (it.second - 1) / 2);
+    for (int i = 0; i < 10; i++) {
+        if (i < l[0] - '0') continue;
+        if (i > r[0] - '0') continue;
+
+        int mask = 0;
+        if (i != 0) {
+            mask ^= (1 << i);
+        }
+
+        ans += go(1, (l[0] - '0' == i), (r[0] - '0' == i), mask, (i != 0));
+        ans %= MOD;
     }
+
     cout << ans << '\n';
 }
 
