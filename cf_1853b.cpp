@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e7 + 1e5;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,32 +17,33 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-set<int> st;
-void solve(int n) {
-	for (int i = 2; i <= n; i++) {
-		int init = pow(i, 0) + pow(i, 1) + pow(i, 2);
-		st.insert(init);
-		int x = 3;
-		// cout << init << "\n";
-
-		while (init + pow(i, x) <= (1e18)) {
-			init += pow(i, x);
-			x++;
-			st.insert(init);
+bool check(int n, int n1, int k) {
+	int prev = n1, prev2 = n;
+	k -= 2;
+	while (k--) {
+		int t = prev2 - prev;
+		// cout << prev2 << " " << prev << ' ' << t << "\n";
+		if (t > prev) {
+			return false;
 		}
+		prev2 = prev;
+		prev = t;
 	}
+	return true;
 }
 
 void yash()
 {
-	int n;
-	cin >> n;
-	// pVec(st);
-	if (st.find(n) != st.end()) {
-		cout << "YES\n";
-		return;
+	int n, k;
+	cin >> n >> k;
+
+	int ans = 0;
+	for (int i = (n / 2); i <= n; i++) {
+		if (check(n, i, k)) {
+			ans++;
+		}
 	}
-	cout << "NO\n";
+	cout << ans << "\n";
 }
 
 signed main()
@@ -51,7 +52,6 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	solve(N);
 	test
 	yash();
 	return 0;

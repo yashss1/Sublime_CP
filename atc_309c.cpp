@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,65 +17,39 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-/*
-4
-3
-2 4 6
-1 1 1
-5
-16 7 3 4 11
-7 5 6 13 12
-7
-17 18 18 20 20 4 6
-19 9 12 15 7 17 12
-5
-20 3 14 13 10
-3 15 4 19 13
-*/
-
-vector<int> bpf(N, 0);
-void BPF() {
-	bpf[1] = 1;
-	for (int i = 2; i <= N; i++) {
-		if (!bpf[i]) {
-			for (int j = i; j <= N; j += i) {
-				bpf[j] = i;
-			}
-		}
-	}
-}
-
 void yash()
 {
-	BPF();
-	int n;
-	cin >> n;
-	vector<int> v(n), cost(n);
+	int n, k;
+	cin >> n >> k;
+	vector<pair<int, int>> v;
+	int sum = 0;
 	for (int i = 0; i < n; i++) {
-		cin >> v[i];
-	}
-	for (int i = 0; i < n; i++) {
-		cin >> cost[i];
+		int a, b;
+		cin >> a >> b;
+		v.push_back({a, b});
+		sum += b;
 	}
 
-	// for (int i = 1; i <= 100; i++) {
-	// cout << i << " " << bpf[i] << '\n';
+	sort(v.begin(), v.end());
+
+	// cout << sum << '\n';
+	// for (auto it : v) {
+	// 	cout << it.first << " " << it.second << '\n';
 	// }
 
-	int ans = 0;
-	for (int i = 0; i < n; i++) {
-		int t = v[i], curr = 0;
-		while (t) {
-			curr++;
-			if (t == bpf[t]) {
-				break;
-			}
-			t = bpf[t];
-		}
-		cout << i << ' ' << curr << "\n";
-		ans += curr;
+	if (sum <= k) {
+		cout << "1\n";
+		return;
 	}
-	cout << ans << '\n';
+
+	for (int i = 0; i < n; i++) {
+		sum -= v[i].second;
+		if (sum <= k) {
+			cout << v[i].first + 1 << '\n';
+			return;
+		}
+	}
+	cout << n + 1 << '\n';
 }
 
 signed main()

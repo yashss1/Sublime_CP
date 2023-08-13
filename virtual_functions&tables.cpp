@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e7 + 1e5;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,32 +17,40 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-set<int> st;
-void solve(int n) {
-	for (int i = 2; i <= n; i++) {
-		int init = pow(i, 0) + pow(i, 1) + pow(i, 2);
-		st.insert(init);
-		int x = 3;
-		// cout << init << "\n";
 
-		while (init + pow(i, x) <= (1e18)) {
-			init += pow(i, x);
-			x++;
-			st.insert(init);
-		}
+class Employee {
+public:
+	Employee() {
+		cout << "Employee constructor\n";
 	}
-}
+	virtual void RaiseSalary() {
+		cout << "Employee Salary Raised\n";
+	}
+};
+
+class Engineer: public Employee {
+public:
+	Engineer() {
+		cout << "Engineer constructor\n";
+	}
+
+	void RaiseSalary() override {
+		cout << "Engineer Salary Raised\n";
+	}
+};
 
 void yash()
 {
-	int n;
-	cin >> n;
-	// pVec(st);
-	if (st.find(n) != st.end()) {
-		cout << "YES\n";
-		return;
-	}
-	cout << "NO\n";
+	Employee* emp = new Employee();
+	emp->RaiseSalary();
+	cout << '\n';
+
+	Employee* eng = new Engineer();
+	eng->RaiseSalary();
+	cout << '\n';
+
+	Engineer* eng2 = new Engineer();
+	eng2->RaiseSalary();
 }
 
 signed main()
@@ -51,8 +59,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	solve(N);
-	test
+	// test
 	yash();
 	return 0;
 }

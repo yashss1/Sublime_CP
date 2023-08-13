@@ -12,24 +12,37 @@ int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-  freopen("inputf.txt", "r", stdin);
-  freopen("outputf.txt", "w", stdout);
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
 void yash()
 {
-  int n;
-  cin >> n;
+	int n;
+	cin >> n;
+	map<string, int> mp;
+	for (int i = 0; i < n; i++) {
+		string s;
+		cin >> s;
+		string s1 = s;
+		reverse(all(s));
+		if (s1 < s) {
+			swap(s1, s);
+		}
+		mp[s]++;
+	}
+
+	cout << mp.size() << '\n';
 }
 
 signed main()
 {
-  init_code();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0);
-  cout.tie(0);
-  // test
-  yash();
-  return 0;
+	init_code();
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	// test
+	yash();
+	return 0;
 }

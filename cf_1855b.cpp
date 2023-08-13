@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,65 +17,48 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-/*
-4
-3
-2 4 6
-1 1 1
-5
-16 7 3 4 11
-7 5 6 13 12
-7
-17 18 18 20 20 4 6
-19 9 12 15 7 17 12
-5
-20 3 14 13 10
-3 15 4 19 13
-*/
-
-vector<int> bpf(N, 0);
-void BPF() {
-	bpf[1] = 1;
-	for (int i = 2; i <= N; i++) {
-		if (!bpf[i]) {
-			for (int j = i; j <= N; j += i) {
-				bpf[j] = i;
-			}
-		}
-	}
-}
-
 void yash()
 {
-	BPF();
 	int n;
 	cin >> n;
-	vector<int> v(n), cost(n);
+	vector<int> v(n);
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
 	}
-	for (int i = 0; i < n; i++) {
-		cin >> cost[i];
-	}
 
-	// for (int i = 1; i <= 100; i++) {
-	// cout << i << " " << bpf[i] << '\n';
-	// }
-
-	int ans = 0;
-	for (int i = 0; i < n; i++) {
-		int t = v[i], curr = 0;
-		while (t) {
-			curr++;
-			if (t == bpf[t]) {
-				break;
+	vector<pair<int, int>> ans;
+	for (int i = 1; i < n; i++) {
+		if (v[i] < v[i - 1] && v[i - 1] < 0) {
+			for (int j = i - 1; j >= 0; j--) {
+				v[j] += v[j + 1];
+				ans.push_back({j, j + 1});
 			}
-			t = bpf[t];
+			continue;
 		}
-		cout << i << ' ' << curr << "\n";
-		ans += curr;
+		while (v[i] < v[i - 1]) {
+			v[i] += v[i - 1];
+			ans.push_back({i, i - 1});
+		}
 	}
-	cout << ans << '\n';
+
+	// pVec(v);
+	cout << ans.size() << '\n';
+	for (auto it : ans) {
+		cout << it.first + 1 << " " << it.second + 1 << '\n';
+	}
+
+	return;
+	int q;
+	cin >> q;
+	while (q--) {
+		int l, r;
+		cin >> l >> r;
+
+		l--, r--;
+		v[l] += v[r];
+	}
+
+	pVec(v);
 }
 
 signed main()
@@ -84,7 +67,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

@@ -1,15 +1,6 @@
-#include "bits/stdc++.h"
+#include <bits/stdc++.h>
 using namespace std;
-#define F first
-#define S second
-#define ios ios_base::sync_with_stdio(0);cin.tie(0);
-typedef long long ll;
-typedef pair<int, int> ii;
-const int N =  1e3 + 5;
-vector<int>adj[N];
-int dist[2][N];
-int n, m, s, t;
-bool mat[N][N];
+
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -18,42 +9,41 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-
-void bfs(int node) {
-	queue<int>q;
-	memset(dist[node != s], 63, sizeof dist[node != s]);
-	q.push(node);
-	dist[node != s][node] = 0;
-	while (q.size()) {
-
-		auto cur = q.front(); q.pop();
-
-		for (auto v : adj[cur])if (dist[node != s][v] > dist[node != s][cur] + 1) {
-				dist[node != s][v] = dist[node != s][cur] + 1;
-				q.push(v);
-			}
-
-	}
-}
-
 int main() {
 	init_code();
+	int n;
+	cin >> n;
 
-	scanf("%d%d%d%d", &n, &m, &s, &t); --s, --t;
-
-	while (m--) {
-		int u, v; scanf("%d%d", &u, &v);  --u, --v;
-		adj[u].push_back(v);
-		adj[v].push_back(u);
-		mat[u][v] = mat[v][u] = 1;
+	vector<int> v(n);
+	int mx = INT_MIN;
+	for (int i = 0; i < n; ++i) {
+		cin >> v[i];
+		mx = max(mx, v[i]);
 	}
 
-	bfs(s); bfs(t);
-	int ans = 0;
-	for (int i = 0; i < n; i++)
-		for (int j = i + 1; j < n; j++)if (!mat[i][j] && dist[0][i] + 1 + dist[1][j] >= dist[0][t] && dist[1][i] + 1 + dist[0][j] >= dist[0][t])++ans;
+	int k;
+	cin >> k;
 
-	printf("%d\n", ans);
+	if (n > k) {
+		cout << -1 << endl;
+	} else {
+		sort(v.begin(), v.end());
+		int ans = INT_MAX;
+		for (int tankSize = 1; tankSize <= mx; tankSize++) {
+
+			int trips = 0, spill = 0;
+			for (int i = 0; i < n; i++) {
+				trips += (v[i] / tankSize) + (v[i] % tankSize != 0 ? 1 : 0);
+				spill += tankSize - (v[i] % tankSize == 0 ? tankSize : v[i] % tankSize);
+			}
+
+			if (trips <= k) {
+				ans = min(ans, spill);
+			}
+
+		}
+		cout << ans << '\n';
+	}
 
 	return 0;
 }

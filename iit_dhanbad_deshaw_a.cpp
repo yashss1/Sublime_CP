@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e7 + 1e5;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,32 +17,32 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-set<int> st;
-void solve(int n) {
-	for (int i = 2; i <= n; i++) {
-		int init = pow(i, 0) + pow(i, 1) + pow(i, 2);
-		st.insert(init);
-		int x = 3;
-		// cout << init << "\n";
-
-		while (init + pow(i, x) <= (1e18)) {
-			init += pow(i, x);
-			x++;
-			st.insert(init);
-		}
+// question -> naman WA chat -> 15-7-23
+bool cmp(pair<int, int>&p1, pair<int, int>&p2) {
+	if (p1.first != p2.first) return p1.first < p2.first;
+	else {
+		return p1.second < p2.second;
 	}
 }
 
 void yash()
 {
-	int n;
-	cin >> n;
-	// pVec(st);
-	if (st.find(n) != st.end()) {
-		cout << "YES\n";
-		return;
+	int n, max_sum;
+	cin >> n >> max_sum;
+	vector<pair<int, int>> v(n);
+	for (int i = 0; i < n; i++) {
+		int a; cin >> a;
+		v[i] = {a, i};
 	}
-	cout << "NO\n";
+	sort(v.begin(), v.end(), cmp);
+
+	int t = 0, i = 0;
+
+	while (t) {
+		t += v[i].first;
+
+
+	}
 }
 
 signed main()
@@ -51,8 +51,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	solve(N);
-	test
+	// test
 	yash();
 	return 0;
 }

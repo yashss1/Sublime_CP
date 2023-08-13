@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,65 +17,47 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-/*
-4
-3
-2 4 6
-1 1 1
-5
-16 7 3 4 11
-7 5 6 13 12
-7
-17 18 18 20 20 4 6
-19 9 12 15 7 17 12
-5
-20 3 14 13 10
-3 15 4 19 13
-*/
-
-vector<int> bpf(N, 0);
-void BPF() {
-	bpf[1] = 1;
-	for (int i = 2; i <= N; i++) {
-		if (!bpf[i]) {
-			for (int j = i; j <= N; j += i) {
-				bpf[j] = i;
-			}
-		}
-	}
-}
-
+// E
 void yash()
 {
-	BPF();
 	int n;
 	cin >> n;
-	vector<int> v(n), cost(n);
+	vector<pair<int, int>> v(n);
 	for (int i = 0; i < n; i++) {
-		cin >> v[i];
+		cin >> v[i].first;
+		v[i].second = i;
 	}
-	for (int i = 0; i < n; i++) {
-		cin >> cost[i];
-	}
-
-	// for (int i = 1; i <= 100; i++) {
-	// cout << i << " " << bpf[i] << '\n';
+	sort(v.begin(), v.end());
+	// for (auto it : v) {
+	// 	cout << it.first << " " << it.second << "\n";
 	// }
 
 	int ans = 0;
 	for (int i = 0; i < n; i++) {
-		int t = v[i], curr = 0;
-		while (t) {
-			curr++;
-			if (t == bpf[t]) {
-				break;
-			}
-			t = bpf[t];
-		}
-		cout << i << ' ' << curr << "\n";
-		ans += curr;
+		ans += abs(v[0].first - v[i].first) + 1;
 	}
-	cout << ans << '\n';
+	int prev = ans;
+
+	map<int, int> mp;
+	mp[v[0].second] = prev;
+	for (int i = 1; i < n; i++) {
+		int back = i;
+		int front = (n - i);
+		// cout << back << " " << front << '\n';
+		int diff = v[i].first - v[i - 1].first;
+		int curr = prev + (back * diff) - (front * diff);
+
+		mp[v[i].second] = curr;
+		prev = curr;
+		// cout << v[i].second << " " << curr << '\n';
+	}
+
+	vector<int> res(n);
+	for (auto it : mp) {
+		res[it.first] = it.second;
+	}
+
+	pVec(res);
 }
 
 signed main()
@@ -84,7 +66,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

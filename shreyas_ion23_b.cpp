@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -18,62 +18,72 @@ void init_code() {
 }
 
 /*
-4
 3
-2 4 6
-1 1 1
-5
-16 7 3 4 11
-7 5 6 13 12
-7
-17 18 18 20 20 4 6
-19 9 12 15 7 17 12
-5
-20 3 14 13 10
-3 15 4 19 13
+cdecd
+4
+0 0 0 0
+0 1 2 3
+0 1 1 0
+xxdnssuqevu
+1
+0
+10
+3
+bcba
+3
+1 2 1
+3 3 1
+2 0 0
 */
-
-vector<int> bpf(N, 0);
-void BPF() {
-	bpf[1] = 1;
-	for (int i = 2; i <= N; i++) {
-		if (!bpf[i]) {
-			for (int j = i; j <= N; j += i) {
-				bpf[j] = i;
-			}
-		}
-	}
-}
 
 void yash()
 {
-	BPF();
+	// INPUT
+	string s;
+	cin >> s;
+	int m = s.size();
 	int n;
 	cin >> n;
-	vector<int> v(n), cost(n);
+	vector<int> startIndex(n), endIndex(n), subs(n);
 	for (int i = 0; i < n; i++) {
-		cin >> v[i];
+		cin >> startIndex[i];
 	}
 	for (int i = 0; i < n; i++) {
-		cin >> cost[i];
+		cin >> endIndex[i];
+	}
+	for (int i = 0; i < n; i++) {
+		cin >> subs[i];
 	}
 
-	// for (int i = 1; i <= 100; i++) {
-	// cout << i << " " << bpf[i] << '\n';
-	// }
 
-	int ans = 0;
-	for (int i = 0; i < n; i++) {
-		int t = v[i], curr = 0;
-		while (t) {
-			curr++;
-			if (t == bpf[t]) {
-				break;
-			}
-			t = bpf[t];
+	// CODE
+	vector<vector<int>> hsh(26, vector<int>(m + 1, 0));
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < 26; j++) {
+			hsh[j][i + 1] = hsh[j][i];
 		}
-		cout << i << ' ' << curr << "\n";
-		ans += curr;
+		hsh[s[i] - 'a'][i + 1] += 1;
+	}
+
+
+	string ans = "";
+	for (int i = 0; i < n; i++) {
+		int l = startIndex[i] + 1, r = endIndex[i] + 1;
+		int temp = 0;
+		for (int j = 0; j < 26; j++) {
+			int curr = hsh[j][r] - hsh[j][l - 1];
+			if (curr % 2 == 1) {
+				temp++;
+			}
+		}
+
+		temp /= 2;
+		if (temp <= subs[i]) {
+			ans += "1";
+		}
+		else {
+			ans += "0";
+		}
 	}
 	cout << ans << '\n';
 }
@@ -84,7 +94,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

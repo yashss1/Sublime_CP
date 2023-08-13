@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e7 + 1e5;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,32 +17,36 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-set<int> st;
-void solve(int n) {
-	for (int i = 2; i <= n; i++) {
-		int init = pow(i, 0) + pow(i, 1) + pow(i, 2);
-		st.insert(init);
-		int x = 3;
-		// cout << init << "\n";
-
-		while (init + pow(i, x) <= (1e18)) {
-			init += pow(i, x);
-			x++;
-			st.insert(init);
-		}
-	}
-}
-
 void yash()
 {
 	int n;
 	cin >> n;
-	// pVec(st);
-	if (st.find(n) != st.end()) {
-		cout << "YES\n";
-		return;
+	int m = (n * (n - 1) / 2);
+	vector<int> v(m);
+	for (int i = 0; i < m; i++) {
+		cin >> v[i];
 	}
-	cout << "NO\n";
+
+	sort(v.begin(), v.end());
+	// pVec(v);
+
+	vector<int> ans(n);
+	int j = n - 1;
+	int p = 0;
+	for (int i = 0; i < m; i++) {
+		int k = i + j - 1;
+		j--;
+
+		// cout << i << "\n";
+		ans[p++] = v[i];
+		i = k + 1;
+		i--;
+		if (j < 0) {
+			break;
+		}
+	}
+	ans[n - 1] = 1000000000;
+	pVec(ans);
 }
 
 signed main()
@@ -51,7 +55,6 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	solve(N);
 	test
 	yash();
 	return 0;

@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e7 + 1e5;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,32 +17,34 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-set<int> st;
-void solve(int n) {
-	for (int i = 2; i <= n; i++) {
-		int init = pow(i, 0) + pow(i, 1) + pow(i, 2);
-		st.insert(init);
-		int x = 3;
-		// cout << init << "\n";
-
-		while (init + pow(i, x) <= (1e18)) {
-			init += pow(i, x);
-			x++;
-			st.insert(init);
-		}
-	}
-}
-
 void yash()
 {
-	int n;
-	cin >> n;
-	// pVec(st);
-	if (st.find(n) != st.end()) {
-		cout << "YES\n";
-		return;
+	int a, b;
+	cin >> a >> b;
+	if (a > b) swap(a, b);
+
+	int arr[3][3];
+	int k = 1;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			arr[i][j] = k;
+			k++;
+			// cout << arr[i][j] << " ";
+		}
+		// cout << '\n';
 	}
-	cout << "NO\n";
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 2; j++) {
+			if (arr[i][j] == a && arr[i][j + 1] == b) {
+				cout << "Yes\n";
+				return;
+			}
+		}
+	}
+	cout << "No\n";
+
+
 }
 
 signed main()
@@ -51,8 +53,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	solve(N);
-	test
+	// test
 	yash();
 	return 0;
 }

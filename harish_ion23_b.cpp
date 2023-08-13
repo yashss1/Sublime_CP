@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -18,65 +18,53 @@ void init_code() {
 }
 
 /*
-4
 3
-2 4 6
-1 1 1
-5
-16 7 3 4 11
-7 5 6 13 12
 7
-17 18 18 20 20 4 6
-19 9 12 15 7 17 12
+3 3 3 4 4 1 8
 5
-20 3 14 13 10
-3 15 4 19 13
+1 2 3 4 5
+4
+1 1 1 2
 */
 
-vector<int> bpf(N, 0);
-void BPF() {
-	bpf[1] = 1;
-	for (int i = 2; i <= N; i++) {
-		if (!bpf[i]) {
-			for (int j = i; j <= N; j += i) {
-				bpf[j] = i;
-			}
-		}
+int dp[100001];
+int go(int idx, int mx, map<int, int>&mp) {
+	if (idx > mx) {
+		return 0;
 	}
+
+	int &ans = dp[idx];
+	if (ans != -1) {
+		return ans;
+	}
+
+	int c1 = 0, c2 = 0;
+	if (mp[idx] != 0) {
+		c1 = (mp[idx] * idx) + go(idx + 2, mx, mp);
+	}
+	c2 = go(idx + 1, mx, mp);
+
+	return ans = max({c1, c2});
 }
 
 void yash()
 {
-	BPF();
 	int n;
 	cin >> n;
-	vector<int> v(n), cost(n);
+	vector<int> v(n);
+	int mx = 0;
+	map<int, int> mp;
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
-	}
-	for (int i = 0; i < n; i++) {
-		cin >> cost[i];
+		mp[v[i]]++;
+		mx = max(mx, v[i]);
 	}
 
-	// for (int i = 1; i <= 100; i++) {
-	// cout << i << " " << bpf[i] << '\n';
-	// }
-
-	int ans = 0;
-	for (int i = 0; i < n; i++) {
-		int t = v[i], curr = 0;
-		while (t) {
-			curr++;
-			if (t == bpf[t]) {
-				break;
-			}
-			t = bpf[t];
-		}
-		cout << i << ' ' << curr << "\n";
-		ans += curr;
-	}
+	memset(dp, -1, sizeof(dp));
+	int ans = go(1, mx, mp);
 	cout << ans << '\n';
 }
+
 
 signed main()
 {
@@ -84,7 +72,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }
