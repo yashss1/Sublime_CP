@@ -19,8 +19,57 @@ void init_code() {
 
 void yash()
 {
-  int n;
-  cin >> n;
+  int n, m;
+  cin >> n >> m;
+  vector<int> vec(n);
+
+  for (auto &i : vec) {
+    cin >> i;
+  }
+
+  map<int, int> currSize;
+  currSize[0] = m;
+
+  map<pair<int, int>, int> mp;
+  mp[ {m - 0, 0}]++;
+
+
+  multiset<int> multi;
+  multi.insert(0); multi.insert(m);
+
+  priority_queue<pair<int, int>> pq;
+  pq.push({m, 0});
+
+  for (int i = 0; i < n; i++) {
+    auto iter = multi.lower_bound(vec[i]);
+    iter--;
+
+    int prev = (*iter);
+
+    int sz = currSize[prev], naman = vec[i] - prev;
+    int kl = (prev + sz) - vec[i];
+
+
+    currSize[prev] = naman;
+    currSize[vec[i]] = kl;
+
+    mp[ {sz, prev}]--;
+
+    multi.insert(vec[i]);
+
+    pq.push({naman, prev});
+    pq.push({kl, vec[i]});
+
+    mp[ {naman, prev}]++;
+    mp[ {kl, vec[i]}]++;
+
+    while (!mp[ {pq.top().first, pq.top().second}]) {
+      pq.pop();
+    }
+
+    cout << pq.top().first << " ";
+  }
+  cout << "\n";
 }
 
 signed main()
@@ -29,7 +78,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }
