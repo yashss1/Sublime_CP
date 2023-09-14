@@ -12,73 +12,83 @@ int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-  freopen("inputf.txt", "r", stdin);
-  freopen("outputf.txt", "w", stdout);
+    freopen("inputf.txt", "r", stdin);
+    freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
 void yash()
 {
-  int n, m;
-  cin >> n >> m;
-  vector<int> vec(n);
+    int k, q;
+    cin >> k >> q;
 
-  for (auto &i : vec) {
-    cin >> i;
-  }
+    int time = 0;
 
-  map<int, int> currSize;
-  currSize[0] = m;
+    map<string, int> tokenTime;
+    map<string, int> present;
+    set<pair<int, string>> st;
+    map<string, int> mp2;
 
-  map<pair<int, int>, int> mp;
-  mp[ {m - 0, 0}]++;
+    while (q--) {
+        string s;
+        cin >> s;
+        if (s == "generate") {
+            string a;
+            int b;
+            cin >> a >> b;
+            tokenTime[a] = b;
+            present[a] = 1;
 
+            st.insert({b, a});
+            mp2[a]++;
+            time = b;
+        }
+        else if (s == "renew") {
+            string a;
+            int b;
+            cin >> a >> b;
+            if (present[a] == 0) {
+                continue;
+            }
+            mp2[a]++;
+            tokenTime[a] = b;
+            st.insert({b, a});
+            time = b;
+        }
+        else {
+            int b;
+            cin >> b;
+            time = b;
 
-  multiset<int> multi;
-  multi.insert(0); multi.insert(m);
+            while (st.size() > 0) {
+                pair<int, string> temp = (*st.begin());
 
-  priority_queue<pair<int, int>> pq;
-  pq.push({m, 0});
+                if (time - tokenTime[temp.second] >= k || tokenTime[temp.second] > temp.first) {
+                    st.erase(st.find(temp));
+                    mp2[temp.second]--;
+                    if (mp2[temp.second] == 0) {
+                        mp2.erase(temp.second);
+                    }
+                }
+                else {
+                    break;
+                }
+            }
 
-  for (int i = 0; i < n; i++) {
-    auto iter = multi.lower_bound(vec[i]);
-    iter--;
-
-    int prev = (*iter);
-
-    int sz = currSize[prev], naman = vec[i] - prev;
-    int kl = (prev + sz) - vec[i];
-
-
-    currSize[prev] = naman;
-    currSize[vec[i]] = kl;
-
-    mp[ {sz, prev}]--;
-
-    multi.insert(vec[i]);
-
-    pq.push({naman, prev});
-    pq.push({kl, vec[i]});
-
-    mp[ {naman, prev}]++;
-    mp[ {kl, vec[i]}]++;
-
-    while (!mp[ {pq.top().first, pq.top().second}]) {
-      pq.pop();
+            cout << mp2.size() << '\n';
+        }
     }
+    // cout << '\n';
 
-    cout << pq.top().first << " ";
-  }
-  cout << "\n";
 }
 
 signed main()
 {
-  init_code();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0);
-  cout.tie(0);
-  test
-  yash();
-  return 0;
+    init_code();
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    test
+    yash();
+    return 0;
 }

@@ -1,7 +1,24 @@
 3
-2 5
-2 4
-4 5
-4 3 2 1
-4 25
-10 12 5 19
+35
+6
+generate token1 3
+count 4
+generate token2 6
+count 7
+generate token3 11
+count 41
+5 7
+generate aaa 1
+renew aaa 2
+count 6
+generate bbb 7
+renew aaa 8
+renew bbb 10
+count 15
+9 6
+generate token1 3
+renew token1 5
+generate token2 7
+renew token2 8
+generate token3 9
+count 12

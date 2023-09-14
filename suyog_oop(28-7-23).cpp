@@ -57,9 +57,44 @@ void yash()
 signed main()
 {
 	ios_base::sync_with_stdio(false);
+	init_code();
 	cin.tie(0);
 	cout.tie(0);
 	// test
 	yash();
 	return 0;
 }
+
+/*
+
+// Suyog Patil
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class ABC
+{
+public:
+    virtual void tp() = 0; // pure virtual function
+};
+
+class A : public ABC
+{
+public:
+    void tp()
+    {
+        cout << "TP from A\n";
+    }
+};
+
+int main()
+{
+
+    ABC *a = new A(); // runtime polymorphism
+    // all children all ABC can be called ABC
+    a->tp();
+
+    return 0;
+}
+
+*/
