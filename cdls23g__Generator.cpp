@@ -1,61 +1,40 @@
+//YashS
 #include <bits/stdc++.h>
 using namespace std;
 
-#define N 1000
+#define N 100
 #define K 1000
-#define T 5
-#define X 100000000
-
-// Chef and Negative Arrays
+#define T 10
+#define X 1000
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-	freopen("1.in", "r", stdin);
-	freopen("33.in", "w", stdout);
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
 int main()
 {
-	init_code();
-
+	//init_code();
 	srand(time(0));					  //IMPPPP....
+
 	long long int t = rand() % T + 1; //Generate a random number between 1 and T.
 	cout << t << endl;
+	// t = 1;
 	for (int tc = 0; tc < t; tc++)
 	{
-		long long int n = rand() % (N) + 1;
-		n = 1000;
+		long long int n = (rand() % (N)) + 1; // 1 to N
+		cout << n << '\n';
 
-		vector<vector<int>> v;
-		for (int i = 0; i < n; i++)
-		{
-			long long int k = rand() % (K) + 1;
-			vector<int> temp;
-			map<int, int> mp;
-			k = 1000;
-			for (int j = 0; j < k; j++)
-			{
-				long long int x = (rand() % X);
-				long long int x1 = (rand() % X);
-				x -= x1;
-				if (mp[x]) {
-					j--;
-					continue;
-				}
-				mp[x] = 1;
-				temp.push_back(x);
-			}
-			v.push_back(temp);
-		}
-
-		cout << n << "\n";
+		vector<int> v(n);
 		for (int i = 0; i < n; i++) {
-			cout << v[i].size() << ' ';
-			for (auto it : v[i]) {
-				cout << it << " ";
-			}
-			cout << "\n";
+			long long int x = (rand() % (X)) + 1;
+			v[i] = x;
 		}
+
+		for (auto it : v) {
+			cout << it << " ";
+		} cout << '\n';
 	}
 }
