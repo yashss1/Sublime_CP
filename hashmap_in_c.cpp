@@ -1,3 +1,37 @@
+
+struct Webpage
+{
+	std::string url;
+	size_t numberOfVisits;
+};
+
+struct History
+{
+	void visit(const std::string & url)
+	{
+		// Implement the logic
+	}
+
+	void printTop5()
+	{
+		// Implement the logic
+	}
+};
+
+int main()
+{
+	History h;
+	std::cout << "before visits\n";
+	h.visit("www.google.com");
+	h.visit("nytimes.com");
+	h.visit("guardian.co.uk");
+	h.visit("dev.ibm.com");
+	h.visit("www.google.com");
+	std::cout << "after visits\n";
+	h.print();
+}
+
+
 //YashS
 #include <bits/stdc++.h>
 using namespace std;
