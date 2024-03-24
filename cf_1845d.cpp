@@ -17,55 +17,49 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-int n;
-vector<int> v(N);
-int solve(int k) {
-	int ans = 0, flag = 0;
-	if (ans >= k) flag = 1;
-	for (int i = 0; i < n; i++) {
-		if (ans + v[i] < k && flag == 1) {
-			ans = k;
-		}
-		else {
-			ans += v[i];
-		}
-		if (ans >= k) {
-			flag = 1;
-		}
-	}
-
-	return ans;
-}
-
 void yash()
 {
+	int n;
 	cin >> n;
-
+	vector<int> v(n);
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
+		v[i] *= -1;
 	}
 
-	vector<int> hsh(n);
-	int curr = 0;
-	for (int i = 0; i < n; i++) {
-		curr += v[i];
-		hsh[i] = curr;
-	}
 	set<int> st;
-	for (auto it : hsh) {
-		st.insert(it);
-	}
+	int sum = 0, ans = 0;
+	int l = 0, r = 0;
+	pair<int, int> temp = { -1, -1};
 
-	int ans = 0, mx = 0;
-	for (auto it : st) {
-		// cout << it << " " << solve(it) << '\n';
-		int t = solve(it);
-		if (mx < t) {
-			mx = t;
-			ans = it;
+	for (int i = 0; i < n; i++) {
+		sum += v[i];
+		if (sum < 0) {
+			l = i + 1;
+			sum = 0;
+		}
+		if (ans < sum) {
+			ans = sum;
+			r = i;
+			while (l < n && v[l] < 0) l++;
+			temp = {l, r};
 		}
 	}
-	cout << ans << '\n';
+
+	if (temp.first == -1) {
+		cout << "0\n";
+		return;
+	}
+
+	// cout << ans << '\n';
+	// cout << temp.first << " " << temp.second << '\n';
+
+	int res = 0;
+	for (int i = 0; i < temp.first; i++) {
+		res += (v[i] * -1);
+
+	}
+	cout << res << '\n';
 }
 
 signed main()

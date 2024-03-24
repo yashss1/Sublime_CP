@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -22,30 +22,47 @@ void yash()
 	int n;
 	cin >> n;
 	vector<int> v(n);
+	priority_queue<int> pq;
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
+		pq.push(v[i]);
 	}
 
-	vector<int> dp(515, INT_MAX); //tells i is XOR of any subsequence till current idx
-	set<int> st;
-	st.insert(0);
+	int flag = 0;
 
-	for (int i = 0; i < n; i++) {
-		dp[v[i]] = min(dp[v[i]], v[i]);
-		for (int j = 0; j <= 513; j++) {
-			if (dp[j] != INT_MAX && dp[j] < v[i]) {
-				dp[j ^ v[i]] = min(dp[j ^ v[i]], v[i]);
-			}
+	vector<int> remainder;
+	while (!pq.empty()) {
+		int top = pq.top();
+		if (top <= 0) {
+			break;
+		}
+		pq.pop();
+		for (auto it : remainder) {
+			pq.push(it);
+		} remainder.clear();
+
+		top--;
+		flag ^= 1;
+		if (top > 0) {
+			remainder.push_back(top);
 		}
 	}
-
-	for (int i = 0; i <= 514; i++) {
-		if (dp[i] != INT_MAX) {
-			st.insert(i);
-		}
+	for (auto it : remainder) {
+		pq.push(it);
 	}
-	cout << st.size() << '\n';
-	pVec(st);
+
+	vector<int> final;
+	while (!pq.empty()) {
+		final.push_back(pq.top());
+		pq.pop();
+	}
+	// pVec(final);
+
+	if (flag) {
+		cout << "T\n";
+		return;
+	}
+	cout << "HL\n";
 }
 
 signed main()
@@ -54,7 +71,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

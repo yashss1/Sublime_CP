@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+const int N = 1e6 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,35 +17,47 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-void yash()
-{
-	int n;
-	cin >> n;
-	vector<int> v(n);
-	for (int i = 0; i < n; i++) {
-		cin >> v[i];
-	}
+/*
+https://leetcode.com/discuss/interview-question/4719534/uber-OA/
+*/
 
-	vector<int> dp(515, INT_MAX); //tells i is XOR of any subsequence till current idx
-	set<int> st;
-	st.insert(0);
-
-	for (int i = 0; i < n; i++) {
-		dp[v[i]] = min(dp[v[i]], v[i]);
-		for (int j = 0; j <= 513; j++) {
-			if (dp[j] != INT_MAX && dp[j] < v[i]) {
-				dp[j ^ v[i]] = min(dp[j ^ v[i]], v[i]);
+int prime[N + 1] = {0};
+void seive(int n) {
+	prime[1] = 1;
+	for (int i = 2; i * i <= n; i++) {
+		if (prime[i] == 0) {
+			for (int j = i * i; j <= n; j += i) {
+				prime[j] = 1;
 			}
 		}
 	}
+}
 
-	for (int i = 0; i <= 514; i++) {
-		if (dp[i] != INT_MAX) {
-			st.insert(i);
-		}
+void yash()
+{
+	seive(N - 2);
+	int n;
+	cin >> n;
+	vector<int> pref(N, 0);
+
+	for (int i = 1; i < 100; i++) {
+		pref[i] = (prime[i] == 0 ? i : 0) +  pref[i - 1];
 	}
-	cout << st.size() << '\n';
-	pVec(st);
+
+	// for (int i = 0; i <= 10; i++) {
+	//     cout << i << " -> " << pref[i] << "\n";
+	// }
+
+	int ans = 1;
+	for (int i = 0; i < n; i++) {
+		int l, r;
+		cin >> l >> r;
+
+		int res = pref[r] - pref[l - 1];
+		ans *= res;
+		ans %= MOD;
+	}
+	cout << ans << '\n';
 }
 
 signed main()

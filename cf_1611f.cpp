@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -19,33 +19,39 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, k;
+	cin >> n >> k;
 	vector<int> v(n);
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
 	}
 
-	vector<int> dp(515, INT_MAX); //tells i is XOR of any subsequence till current idx
-	set<int> st;
-	st.insert(0);
-
-	for (int i = 0; i < n; i++) {
-		dp[v[i]] = min(dp[v[i]], v[i]);
-		for (int j = 0; j <= 513; j++) {
-			if (dp[j] != INT_MAX && dp[j] < v[i]) {
-				dp[j ^ v[i]] = min(dp[j ^ v[i]], v[i]);
-			}
+	vector<vector<int>> ans;
+	int i = 0, j = 0;
+	int sum = k;
+	while (j < n) {
+		int curr = sum + v[j];
+		while (i <= j && curr < 0) {
+			curr -= v[i];
+			i++;
 		}
+		// cout << i << " " << j << '\n';
+		ans.push_back({ -(j - i + 1), i, j});
+		sum = curr;
+		j++;
 	}
+	sort(ans.begin(), ans.end());
 
-	for (int i = 0; i <= 514; i++) {
-		if (dp[i] != INT_MAX) {
-			st.insert(i);
-		}
+	if (ans.size() == 0) {
+		cout << "-1\n";
+		return;
 	}
-	cout << st.size() << '\n';
-	pVec(st);
+	if (ans[0][1] > ans[0][2]) {
+		cout << "-1\n";
+		return;
+	}
+	cout << ans[0][1] + 1 <<  " " << ans[0][2] + 1 << '\n';
+
 }
 
 signed main()
@@ -54,7 +60,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

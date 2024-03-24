@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,35 +17,41 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-void yash()
-{
-	int n;
-	cin >> n;
-	vector<int> v(n);
-	for (int i = 0; i < n; i++) {
-		cin >> v[i];
-	}
+string s;
+int n, k;
 
-	vector<int> dp(515, INT_MAX); //tells i is XOR of any subsequence till current idx
-	set<int> st;
-	st.insert(0);
-
-	for (int i = 0; i < n; i++) {
-		dp[v[i]] = min(dp[v[i]], v[i]);
-		for (int j = 0; j <= 513; j++) {
-			if (dp[j] != INT_MAX && dp[j] < v[i]) {
-				dp[j ^ v[i]] = min(dp[j ^ v[i]], v[i]);
+int go(int idx, int edge, int mask, int taken) {
+	if (idx == n) {
+		for (int i = 0; i < 10; i++) {
+			if (taken & (1 << i)) {
+				return 0;
 			}
 		}
+		return 1;
 	}
 
-	for (int i = 0; i <= 514; i++) {
-		if (dp[i] != INT_MAX) {
-			st.insert(i);
+	int ans = 0;
+	for (int i = 0; i < 10; i++) {
+		if (mask & (1 << i)) {
+			if ((taken & (1 << i))) {
+				taken ^= (1 << i);
+			}
+			ans |= go(idx + 1, edge, mask, taken);
 		}
 	}
-	cout << st.size() << '\n';
-	pVec(st);
+	return ans;
+}
+
+void yash()
+{
+	cin >> s >> k;
+	n = s.size();
+
+	int ans = 0;
+	for (int i = 0; i < pow(2, k) - 1ll; i++) {
+		ans = go(0, 0, 0, i);
+	}
+	cout << ans << '\n';
 }
 
 signed main()
@@ -54,7 +60,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

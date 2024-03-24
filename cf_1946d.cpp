@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -19,33 +19,43 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, x;
+	cin >> n >> x;
 	vector<int> v(n);
+	int OR = 0;
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
+		OR |= v[i];
 	}
 
-	vector<int> dp(515, INT_MAX); //tells i is XOR of any subsequence till current idx
-	set<int> st;
-	st.insert(0);
+	if (OR <= x) {
+		cout << n << "\n";
+		return;
+	}
 
+	vector<vector<int>> pref(31, vector<int>(n + 1, 0));
 	for (int i = 0; i < n; i++) {
-		dp[v[i]] = min(dp[v[i]], v[i]);
-		for (int j = 0; j <= 513; j++) {
-			if (dp[j] != INT_MAX && dp[j] < v[i]) {
-				dp[j ^ v[i]] = min(dp[j ^ v[i]], v[i]);
+		int mx = i;
+		int XOR = v[i];
+		for (int j = 0; j <= 30; j++) {
+			if ((v[i] & (1 << j)) && (x & (1 << j))) {
+				for (int k = i + 1; k < n; k++) {
+					mx = max(mx, k);
+				}
+			}
+			else if (v[i] & (1 << j)) {
+				for (int k = i + 1; k < n; k++) {
+					mx = max(mx, k);
+				}
+			}
+			else {
+				break;
 			}
 		}
-	}
+		for (int i = 0; i < n; i++) {
 
-	for (int i = 0; i <= 514; i++) {
-		if (dp[i] != INT_MAX) {
-			st.insert(i);
 		}
 	}
-	cout << st.size() << '\n';
-	pVec(st);
 }
 
 signed main()
@@ -54,7 +64,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }
