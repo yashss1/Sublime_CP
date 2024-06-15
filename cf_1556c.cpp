@@ -26,29 +26,65 @@ void yash()
 		cin >> v[i];
 	}
 
-	int sum1 = 0;
-	for (int i = 0; i < n; i++) {
-		if (i % 2 == 0) {
-			sum1 += v[i];
-		}
-		else {
-			sum1 -= v[i];
-		}
+	// int sum1 = 0;
+	// for (int i = 0; i < n; i++) {
+	// 	if (i % 2 == 0) {
+	// 		sum1 += v[i];
+	// 	}
+	// 	else {
+	// 		sum1 -= v[i];
+	// 	}
 
-		cout << sum1 << " ";
-	} cout << '\n';
+	// 	cout << sum1 << " ";
+	// } cout << '\n';
 
+	int ans = 0;
 	int sum = 0, prev = 0;
 	for (int i = 0; i < n; i++) {
 		if (i % 2 == 0) {
 			sum += v[i];
 		} else sum -= v[i];
 
-		int valHere = sum;
-		for (int j = 0; j < n; j++) {
+		if (i % 2 == 0) {
+			int p = prev, q = sum;
+			// cout << "\n\n" << i << '\n';
+			// cout << p << " " << q << "\n";
 
+			int newSum = sum, newPrev = sum;
+			for (int j = i + 1; j < n; j++) {
+				if (j % 2 == 0) {
+					newSum += v[j];
+				} else newSum -= v[j];
+
+				if (j % 2 == 1) {
+					if (j == i + 1) {
+						newPrev--;
+					}
+
+					int r = newPrev, l = newSum;
+					// if (p > q) swap(p, q);
+					// if (l > r) swap(l, r);
+					// cout << j << " " << "l r "  << l << " " << r << " | " << "p q " << p << " " << q << "\n";
+					int R = min(max(p, q), max(l, r));
+					int L = max(min(p, q), min(l, r));
+
+					// cout << "L R " << L << " " << R << " -> " << (R - L + 1) << "\n";
+					ans += max(0ll, R - L + 1);
+				}
+
+				newPrev = newSum;
+				q = min(q, newSum);
+				if (prev > q) {
+					break;
+				}
+				if (p > q) p = q;
+			}
 		}
+
+		prev = sum;
 	}
+
+	cout << ans << '\n';
 
 
 }

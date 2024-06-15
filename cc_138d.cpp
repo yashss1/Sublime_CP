@@ -17,10 +17,21 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int fpow(int x, int y, int p = MOD) {
+	x = x % p; int sum = 1; while (y) {
+		if (y & 1)sum = sum * x; sum %= p; y = y >> 1; x = x * x; x %= p;
+	} return sum;
+}
+
 void yash()
 {
 	int n;
 	cin >> n;
+	if (n != 2) {
+		cout << (2 * n) << " " << pow(n, 2) << '\n';
+		return;
+	}
+	cout << "4 8\n"; return;
 }
 
 signed main()
@@ -29,7 +40,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

@@ -19,8 +19,28 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, k;
+	cin >> n >> k;
+
+	vector<int> ans;
+
+	int rem = k;
+	while (n > 0 && rem > 0) {
+		int curr = (n / rem) + (n % rem != 0);
+		int temp = n / curr;
+		ans.push_back(curr);
+		int taken = (temp * curr);
+		rem -= (n / curr);
+		n -= taken;
+		cout << n  << " " << curr co << " " << rem << '\n';
+	}
+
+	if (rem != 0) {
+		cout << "NO\n"; return;
+	}
+	cout << "YES\n";
+	cout << ans.size() << '\n';
+	pVec(ans);
 }
 
 signed main()
@@ -29,7 +49,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

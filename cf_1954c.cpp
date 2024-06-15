@@ -19,8 +19,32 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	string a, b;
+	cin >> a >> b;
+	int n = a.size();
+
+	int diff = -1;
+	for (int i = 0; i < n; ++i) {
+		if (a[i] != b[i]) {
+			diff = i;
+			break;
+		}
+	}
+
+	if (diff == -1) {
+		cout << a << '\n' << b << '\n';
+		return;
+	}
+
+	if (a[diff] < b[diff]) swap(a[diff], b[diff]);
+
+	for (int i = diff + 1; i < n; i++) {
+		if (a[i] > b[i]) {
+			swap(a[i], b[i]);
+		}
+	}
+
+	cout << a << "\n" << b << '\n';
 }
 
 signed main()
@@ -29,7 +53,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

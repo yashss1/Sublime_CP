@@ -17,10 +17,48 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int gcd(int a, int b)
+{
+	while (a > 0 && b > 0) {
+		if (a > b) {
+			a = a % b;
+		}
+		else {
+			b = b % a;
+		}
+	}
+	if (a == 0) {
+		return b;
+	}
+	return a;
+}
+
+int lcm(int a, int b) {
+	return (a * b) / gcd(a, b);
+}
+
 void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> a(n), b(n);
+	for (int i = 0; i < n; i++) {
+		cin >> a[i] >> b[i];
+	}
+
+	int gc = 0, lc = 1;
+	int ans = 1;
+	for (int i = 0; i < n; i++) {
+		gc = gcd(gc, a[i] * b[i]);
+		lc = lcm(lc, b[i]);
+		if (gc % lc != 0) {
+			ans++;
+			gc = a[i] * b[i], lc = b[i];
+		}
+	}
+
+
+	cout << ans << "\n";
 }
 
 signed main()
@@ -29,7 +67,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

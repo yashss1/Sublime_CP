@@ -21,6 +21,41 @@ void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n);
+	map<int, int> mp;
+
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+		mp[v[i]]++;
+	}
+	vector<int> ans;
+
+	int gone = n;
+	int k = 0;
+	map<int, int> mp2;
+	for (int i = 0; i <= n; i++) {
+		gone -= mp[k]; mp[k] = 0;
+		ans.push_back(gone);
+		if (gone == 0) {
+			break;
+		}
+		gone--;
+		// if (v[i] == i + 1) {
+		// mp2[v[i]]++;
+		// }
+		// gone += (mp[i + 1] - mp2[i + 1]);
+		// cout << i + 1 << " " << gone << '\n';
+		// cout << mp[i + 1] << " " << mp2[i + 1] << '\n';
+		while (mp[v[i]] == 0 && i < n)
+			i++;
+		if (i == n) break;
+
+		mp[v[i]]--;
+		k++;
+	}
+
+
+	pVec(ans);
 }
 
 signed main()
@@ -29,7 +64,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

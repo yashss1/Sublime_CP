@@ -1,5 +1,4 @@
 //YashS
-// TLE solution but N is small so most probably WA or RTE
 #include <bits/stdc++.h>
 using namespace std;
 #define test              int T;cin>>T;while(T--)
@@ -9,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-const int N = 1e5 + 7;
+int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -18,79 +17,89 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-int n;
-vector<int> v(N);
+map<int, int> compressVector(vector<int>&v) {
+	int n = v.size();
+	vector<int> a = v;
+	sort(a.begin(), a.end());
 
-int dp[N];
-
-int go(int idx) {
-	if (idx == n) {
-		return 0;
-	}
-
-	int &ans = dp[idx];
-	if (ans != -1) {
-		return ans;
-	}
-
-	ans = 0;
-	for (int i = idx + 1; i < n; i++) {
-		if (v[i] == v[idx] + 1) {
-			ans = max(ans, 1 + go(i));
+	map<int, int> mp, regain;
+	int k = 2;
+	mp[a[0]] = 1;
+	for (int i = 1; i < n; i++) {
+		if (a[i] - a[i - 1] > 1) {
+			k++;
+		}
+		if (mp[a[i]] == 0) {
+			mp[a[i]] = k;
+			regain[k] = a[i];
+			k++;
 		}
 	}
 
-	return ans;
-}
-
-void trace(int idx) {
-	if (idx == n) {
-		return;
+	for (int i = 0; i < n; i++) {
+		v[i] = mp[v[i]];
 	}
-
-	int ans = dp[idx];
-
-	for (int i = idx + 1; i < n; i++) {
-		if (v[i] == v[idx] + 1) {
-			if (go(i) + 1 == ans) {
-				cout << i + 1 << ' ';
-				trace(i);
-			}
-		}
-	}
-	// assert(false);
+	return regain;
 }
-
-
 
 void yash()
 {
+	int n;
 	cin >> n;
+	vector<int> v(n);
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
 	}
+	map<int, int> regain = compressVector(v);
 
-	memset(dp, -1, sizeof(dp));
+	// pVec(v);
 
-	int ans = 0;
+	vector<int> dp(2 * (n + 1), 1);
+	multiset<int> st;
 	for (int i = 0; i < n; i++) {
-		ans = max(ans, 1 + go(i));
+		st.insert(v[i]);
+		auto smallBiggestNumber = st.lower_bound(v[i]);
+		if (smallBiggestNumber == st.begin()) {
+			continue;
+		}
+		smallBiggestNumber--;
+
+		if (*(smallBiggestNumber) != v[i] - 1) continue;
+		dp[v[i]] = dp[*(smallBiggestNumber)] + 1;
+
+		// cout << v[i] << " -> " << (*smallBiggestNumber) << " " << dp[v[i]] << '\n';
 	}
 
-	cout << ans << '\n';
+	// pVec(dp);
+	int ans = (*max_element(dp.begin(), dp.end()));
+	// cout << ans << '\n';
 
-	// for (int i = 0; i <= n; i++) {
-	// 	cout << dp[i] << " ";
-	// } cout << '\n';
-
+	int endingAt = 0;
+	vector<int> res, res2;
 	for (int i = 0; i < n; i++) {
-		if (go(i) + 1 == ans) {
-			cout << i + 1 << " ";
-			trace(i);
+		if (dp[v[i]] == ans) {
+			endingAt = v[i];
 			break;
 		}
 	}
-	cout << '\n';
+	int startingAt = endingAt - ans + 1;
+
+	for (int i = 0; i < n; i++) {
+		if (startingAt == v[i] && startingAt <= endingAt) {
+			res.push_back(i + 1);
+			res2.push_back(v[i]);
+			startingAt++;
+		}
+	}
+
+	cout << ans << '\n';
+	// if (ans == 9) {
+	// 	for (auto it : res2) {
+	// 		cout << regain[it] << " ";
+	// 	} cout << '\n';
+	// 	pVec(res2);
+	// }
+	pVec(res);
 }
 
 signed main()
@@ -99,7 +108,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

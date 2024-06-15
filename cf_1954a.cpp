@@ -19,8 +19,15 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, m, k;
+	cin >> n >> m >> k;
+	int temp = n - ((n / m) + (n % m == 0 ? 0 : 1));
+	// cout << temp << " " << k << '\n';
+	if (m == 1 || (temp) <= k) {
+		cout << "NO\n";
+		return;
+	}
+	cout << "YES\n";
 }
 
 signed main()
@@ -29,7 +36,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

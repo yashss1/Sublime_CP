@@ -19,8 +19,28 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, m;
+	cin >> n >> m;
+	string s;
+	cin >> s;
+	map<int, int> mp;
+	for (int i = 0; i < n; i++) {
+		mp[s[i]]++;
+	}
+
+	vector<int> temp;
+	for (auto it : mp) {
+		temp.push_back(it.second);
+	}
+	// sort(all(temp), greater<int>());
+
+	temp = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
+	int ans = 0;
+
+	for (char i : temp) {
+		ans += max(0ll, m - mp[i]);
+	}
+	cout << ans << "\n";
 }
 
 signed main()
@@ -29,7 +49,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

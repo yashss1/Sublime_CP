@@ -17,10 +17,16 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int n;
+vector<int> v;
+
 void yash()
 {
-	int n;
 	cin >> n;
+	v.assign(n, 0);
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
 }
 
 signed main()

@@ -17,10 +17,40 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int gcd(int a, int b)
+{
+	while (a > 0 && b > 0) {
+		if (a > b) {
+			a = a % b;
+		}
+		else {
+			b = b % a;
+		}
+	}
+	if (a == 0) {
+		return b;
+	}
+	return a;
+}
+
 void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n);
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
+	int gc = 0;
+	for (int i = 0; i < n; i++) {
+		gc = gcd(gc, v[i]);
+	}
+
+	int ans = 0;
+	for (int i = 0; i < n; i++) {
+		ans += (v[i] / gc);
+	}
+	cout << ans << '\n';
 }
 
 signed main()
@@ -29,7 +59,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

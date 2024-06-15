@@ -21,6 +21,36 @@ void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n);
+	map<int, int> mp;
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+		mp[v[i]]++;
+	}
+
+	if (mp.size() == 1) {
+		cout << "-1\n";
+		return;
+	}
+
+	int res = 1, ans = INT_MAX;
+	int first = v[0];
+	for (int i = 1; i < n; i++) {
+		if (v[i] != first) {
+			if (first == v[0]) {
+				ans = min(ans, res);
+			}
+			res = 1;
+			first = v[i];
+			continue;
+		}
+		res++;
+	}
+	if (first == v[0]) {
+		ans = min(ans, res);
+	}
+
+	cout << ans << '\n';
 }
 
 signed main()
@@ -29,7 +59,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

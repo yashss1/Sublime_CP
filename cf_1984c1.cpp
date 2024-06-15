@@ -17,10 +17,41 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+
 void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n), temp;
+	temp.clear();
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
+
+	int sum = v[0];
+	for (int i = 1; i < n; i++) {
+		if (v[i] > 0 && v[i - 1] > 0) {
+			sum += v[i];
+		}
+		else if (v[i] < 0 && v[i - 1] < 0) {
+			sum += v[i];
+		}
+		else {
+			temp.push_back(sum);
+			sum = v[i];
+		}
+	}
+	temp.push_back(sum);
+
+	int mx = 0, mn = 0;
+	for (int i = 0; i < n; i++) {
+		mx += v[i];
+		mn += v[i];
+
+		mx = max(abs(mx), abs(mn));
+	}
+	cout << mx << '\n';
+
 }
 
 signed main()
@@ -29,7 +60,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

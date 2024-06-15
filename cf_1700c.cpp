@@ -17,10 +17,25 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int solve(vector<int>&v) {
+	int n = v.size();
+	int carry = 0;
+	int ans = v[0];
+	for (int i = 0; i < n; i++) {
+		if (v[i] >= 0) {
+
+		}
+	}
+}
+
 void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n);
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
 }
 
 signed main()

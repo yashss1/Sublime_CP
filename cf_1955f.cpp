@@ -19,8 +19,28 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int a, b, c, d;
+	cin >> a >> b >> c >> d;
+
+	if (d % 2) d--;
+	int x = a / 2 + b / 2 + c / 2 + d / 2;
+
+	if (a % 2 == 0 && b % 2 == 0 && c % 2 == 0) {
+		cout << x << endl;
+		return;
+	}
+
+	int numOdd = 0;
+
+	if (a % 2) numOdd++;
+	if (b % 2) numOdd++;
+	if (c % 2) numOdd++;
+
+	if (numOdd == 3 || numOdd == 0) {
+		cout << x + 1 << "\n";
+		return;
+	}
+	cout << x << '\n';
 }
 
 signed main()
@@ -29,7 +49,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

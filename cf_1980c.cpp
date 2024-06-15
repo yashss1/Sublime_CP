@@ -21,6 +21,47 @@ void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> a(n), b(n);
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+	for (int i = 0; i < n; i++) {
+		cin >> b[i];
+	}
+	int m;
+	cin >> m;
+	vector<int> c(m);
+	map<int, int> mp;
+	for (int i = 0; i < m; i++) {
+		cin >> c[i];
+		mp[c[i]]++;
+	}
+
+	int ans = 0;
+	for (int i = 0; i < n; i++) {
+		if (a[i] != b[i]) {
+			if (mp[b[i]] > 0) {
+				mp[b[i]]--;
+				continue;
+			}
+			ans = 1;
+			break;
+		}
+	}
+
+	if (ans) {
+		cout << "NO\n"; return;
+	}
+
+	int num = 0;
+	for (int i = 0; i < n; i++) {
+		if (b[i] == c[m - 1]) {
+			cout << "YES\n";
+			return;
+		}
+	}
+	cout << "NO\n";
+
 }
 
 signed main()
@@ -29,7 +70,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

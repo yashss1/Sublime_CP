@@ -19,8 +19,41 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	int n, f, k;
+	cin >> n >> f >> k;
+	vector<int> v(n);
+	map<int, int> mp;
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+		mp[v[i]]++;
+	}
+	int num = v[f - 1];
+
+
+	sort(all(v), greater<int>());
+
+	map<int, int> mp2, mp3;
+	for (int i = k; i < n; i++) {
+		mp2[v[i]]++;
+		// cout << v[i] << " ";
+	}
+	// cout << '\n';
+	for (int i = 0; i < k; i++) {
+		mp3[v[i]]++;
+		// cout << v[i] << " ";
+	}
+	// cout << '\n';
+
+	if (mp2[num] >= 1 && mp3[num] >= 1) {
+		cout << "MAYBE\n";
+		return;
+	}
+	if (mp2[num] >= 1) {
+		cout << "NO\n";
+		return;
+	}
+	cout << "YES\n";
+
 }
 
 signed main()
@@ -29,7 +62,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

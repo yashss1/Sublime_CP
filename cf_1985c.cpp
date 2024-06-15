@@ -21,6 +21,20 @@ void yash()
 {
 	int n;
 	cin >> n;
+	vector<int> v(n);
+	int mx = 0, sum = 0;
+	for (int i = 0; i < n; i++) {
+		cin >> v[i];
+	}
+	int ans = 0;
+	for (int i = 0; i < n; i++) {
+		mx = max(v[i], mx);
+		sum += v[i];
+		if (mx == sum - mx) {
+			ans++;
+		}
+	}
+	cout << ans << '\n';
 }
 
 signed main()
@@ -29,7 +43,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

@@ -19,8 +19,10 @@ void init_code() {
 
 void yash()
 {
-	int n;
-	cin >> n;
+	string a, b;
+	cin >> a >> b;
+	swap(a[0], b[0]);
+	cout << a << " " << b << '\n';
 }
 
 signed main()
@@ -29,7 +31,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

@@ -21,6 +21,31 @@ void yash()
 {
 	int n;
 	cin >> n;
+	int x = 0;
+	int ans = 0;
+
+	for (int i = 2; i <= n; ++i) {
+		int j = 1;
+		int anss = 0;
+		while (j * i <= n) {
+			anss += j * i;
+			j++;
+		}
+		if (anss > x) {
+			x = anss;
+			ans = i;
+		}
+	}
+
+	cout << ans << "\n";
+	return;
+	while (1) {
+		int k = (n / x);
+		if (k * x > n) {
+			break;
+		}
+		ans = max(ans, x);
+	}
 }
 
 signed main()
@@ -29,7 +54,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
-	// test
+	test
 	yash();
 	return 0;
 }

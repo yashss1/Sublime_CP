@@ -17,10 +17,62 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+int n, H;
+vector<int> a, c;
+
+int solve(int k) {
+    int h = H;
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += a[i];
+    }
+    if (sum >= h) {
+        return 1;
+    }
+
+    k -= 1;
+    // cout << k << " " << h << '\n';
+
+    for (int i = 0; i < n; i++) {
+        sum += ((k / c[i]) * a[i]);
+        if (sum >= h) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void yash()
 {
-    int n;
-    cin >> n;
+    cin >> H >> n;
+    a.assign(n, 0); c.assign(n, 0);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    for (int i = 0; i < n; i++) {
+        cin >> c[i];
+    }
+
+    int sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += a[i];
+    }
+    if (sum >= H) {
+        cout  << "1\n"; return;
+    }
+
+    int l = 0, r = 1e12, ans = 1e14;
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        if (solve(mid)) {
+            r = mid - 1;
+            ans = mid;
+        }
+        else {
+            l = mid + 1;
+        }
+    }
+    cout << ans << '\n';
 }
 
 signed main()
@@ -29,7 +81,7 @@ signed main()
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    // test
+    test
     yash();
     return 0;
 }
