@@ -8,7 +8,7 @@ using namespace std;
 #define rep(i,a,b)        for(int i=a;i<b;i++)
 #define pVec(v)           for(auto e:v)cout<<e<<" ";cout<<"\n"
 int MOD = 1e9 + 7;
-int N = 1e5 + 7;
+const int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
@@ -17,60 +17,97 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
-int n, H;
-vector<int> a, c;
+/*
+Infosys 7july 2024, naman friend
 
-int solve(int k) {
-    int h = H;
+6 4 5
+0 1 1 2 3 3
+7
+1
+5
+0 1 1 2 3 3 3
+
+*/
+
+int n, a, b;
+vector<int> adj[N], subTreeSize(N);
+vector<vector<pair<int, int>>> mainChildren(N);
+
+int dfs(int node, int par) {
     int sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += a[i];
-    }
-    if (sum >= h) {
-        return 1;
-    }
-
-    k -= 1;
-    // cout << k << " " << h << '\n';
-
-    for (int i = 0; i < n; i++) {
-        sum += ((k / c[i]) * a[i]);
-        if (sum >= h) {
-            return 1;
+    if (node == a)sum++;
+    if (node == b)sum++;
+    for (auto it : adj[node]) {
+        if (it != par) {
+            int val = dfs(it, node);
+            sum += val;
+            if (val != 0) {
+                mainChildren[node].push_back({val, subTreeSize[it]});
+            }
         }
     }
-    return 0;
+    return sum;
+}
+
+int subTree(int node, int par) {
+    int sum = 1;
+    for (auto it : adj[node]) {
+        if (it != par) {
+            sum += subTree(it, node);
+        }
+    }
+    subTreeSize[node] = sum;
+    return sum;
 }
 
 void yash()
 {
-    cin >> H >> n;
-    a.assign(n, 0); c.assign(n, 0);
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
+    cin >> n >> a >> b;
+    for (int i = 0; i <= n; i++) {
+        mainChildren[i].clear();
+        adj[i].clear();
     }
+    subTreeSize.assign(n + 1, 0);
+
+    vector<int> v(n);
     for (int i = 0; i < n; i++) {
-        cin >> c[i];
+        cin >> v[i];
+        if (i == 0)continue;
+        adj[i + 1].push_back(v[i]);
+        adj[v[i]].push_back(i + 1);
     }
 
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += a[i];
-    }
-    if (sum >= H) {
-        cout  << "1\n"; return;
-    }
+    subTree(1, 0);
+    dfs(1, 0);
 
-    int l = 0, r = 1e12, ans = 1e14;
-    while (l <= r) {
-        int mid = (l + r) / 2;
-        if (solve(mid)) {
-            r = mid - 1;
-            ans = mid;
+    // pVec(subTreeSize);
+
+    int ans = 0;
+    for (int i = 1; i <= n; i++) {
+        // cout << i << " -> ";
+        // for (auto it : mainChildren[i]) {
+        //     cout << it.first << " " << it.second << '\n';
+        // }
+
+        int curr = 0;
+        if (mainChildren[i].size() == 0) {
+            curr += 1;
         }
-        else {
-            l = mid + 1;
+        else if (mainChildren[i].size() == 2) {
+            curr += (n - (mainChildren[i][0].second + mainChildren[i][1].second));
+        } else if (mainChildren[i].size() == 1) {
+            // one with self ?? -> other part
+            // else 1
+
+            if (i == a || i == b) {
+                curr += (n - mainChildren[i][0].second);
+            } else {
+                curr += (n - ((n - subTreeSize[i]) + (mainChildren[i][0].second)));
+            }
         }
+
+        // cout << curr << "\n\n";
+        ans += curr;
     }
     cout << ans << '\n';
 }

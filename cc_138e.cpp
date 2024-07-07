@@ -69,7 +69,7 @@ void yash()
 	// for (int i = 0; i < temp.size(); i++) {
 	// 	cout << temp[i] << " -> " << (temp[i] * temp[i]) << '\n';
 	// }
-	// return;
+	dc
 
 	// map<int, int> mp;
 	for (int i = 0; i < temp.size(); i++) {
