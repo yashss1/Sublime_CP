@@ -34,6 +34,7 @@ void make_set(int v) {
 	sizes.insert(1);
 
 }
+
 int find_set(int v) {
 	if (v == parent[v]) {
 		return v;

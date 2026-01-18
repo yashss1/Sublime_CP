@@ -19,8 +19,8 @@ void init_code() {
 
 void yash()
 {
-  int n;
-  cin >> n;
+	int n;
+	cin >> n; 
 }
 
 signed main()

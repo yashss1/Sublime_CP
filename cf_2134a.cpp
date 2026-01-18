@@ -12,24 +12,36 @@ int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-  freopen("inputf.txt", "r", stdin);
-  freopen("outputf.txt", "w", stdout);
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
 void yash()
 {
-  int n;
-  cin >> n;
+	int n, a, b;
+	cin >> n >> a >> b;
+	if (b >= a) {
+		if (n % 2 == b % 2) {
+			cout << "YES\n";
+			return;
+		}
+	}
+
+	if ((n % 2 == a % 2) && (n % 2 == b % 2)) {
+		cout << "YES\n";
+		return;
+	}
+	cout << "NO\n";
 }
 
 signed main()
 {
-  init_code();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0);
-  cout.tie(0);
-  // test
-  yash();
-  return 0;
+	init_code();
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	test
+	yash();
+	return 0;
 }

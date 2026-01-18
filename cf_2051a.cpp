@@ -19,8 +19,25 @@ void init_code() {
 
 void yash()
 {
-  int n;
-  cin >> n;
+	int n;
+	cin >> n; 
+	int ans = 0;
+	vector<int> a(n), b(n);
+	for(int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+	for(int i = 0; i < n; i++) {
+		cin >> b[i];
+	}
+
+	for(int i = 1; i < n; i++) {
+		if(a[i - 1] > b[i]) {
+			ans += (a[i - 1] - b[i]);
+		}
+	}
+	ans += a[n - 1];
+	cout << ans << '\n';
+
 }
 
 signed main()
@@ -29,7 +46,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }

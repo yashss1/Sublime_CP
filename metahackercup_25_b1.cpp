@@ -1,7 +1,6 @@
 //YashS
 #include <bits/stdc++.h>
 using namespace std;
-#define test              int T;cin>>T;while(T--)
 #define int               long long
 #define pb                push_back
 #define all(x)            (x).begin(),(x).end()
@@ -12,24 +11,32 @@ int N = 1e5 + 7;
 
 void init_code() {
 #ifndef ONLINE_JUDGE
-  freopen("inputf.txt", "r", stdin);
-  freopen("outputf.txt", "w", stdout);
+	freopen("inputf.txt", "r", stdin);
+	freopen("outputf.txt", "w", stdout);
 #endif // ONLINE_JUDGE
 }
 
-void yash()
+void yash(int TEST)
 {
-  int n;
-  cin >> n;
+	int n, a, b;
+	cin >> n >> a >> b;
+
+	cout << "Case #" << TEST << ": ";
+	for (int i = 0; i < (2 * n) - 1; i++) {
+		cout << "1 ";
+	} cout << b << '\n';
 }
 
 signed main()
 {
-  init_code();
-  ios_base::sync_with_stdio(false);
-  cin.tie(0);
-  cout.tie(0);
-  // test
-  yash();
-  return 0;
+	init_code();
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	int T;
+	cin >> T;
+	for (int i = 0; i < T; i++) {
+		yash(i + 1);
+	}
+	return 0;
 }

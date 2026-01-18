@@ -19,8 +19,30 @@ void init_code() {
 
 void yash()
 {
-  int n;
-  cin >> n;
+  string s;
+  cin >> s;
+  int cr; cin >> cr;
+
+  map<char, int> mp;
+  for (int i = 0; i < s.size(); i++) {
+    mp[s[i]]++;
+  }
+
+  int ans = 0;
+  while (1) {
+    if (mp['P'] >= cr) {
+      mp['P'] -= cr;
+      mp['A']++;
+    } else if (mp['A'] >= 1) {
+      mp['P']++;
+      mp['A']--;
+    } else {
+      break;
+    }
+    ans++;
+  }
+
+  cout << ans << '\n';
 }
 
 signed main()
@@ -29,7 +51,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }
