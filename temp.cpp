@@ -17,10 +17,79 @@ void init_code() {
 #endif // ONLINE_JUDGE
 }
 
+bool valid(const string &s, char c) {
+  if (!s.empty() && s.back() == c) return false;
+  if (s.size() >= 3 && s[s.size() - 3] == c) return false;
+  return true;
+}
+
 void yash()
 {
-  int n;
-  cin >> n;
+  int r, g, b;
+  cin >> r >> g >> b;
+
+  string s = "";
+
+  while (true) {
+    vector<pair<int, char>> v = {
+      {r, 'R'}, {g, 'G'}, {b, 'B'}
+    };
+    sort(v.rbegin(), v.rend());
+
+    bool placed = false;
+
+    // try pair
+    for (int i = 0; i < 2; i++) {
+      char c1 = v[i].second;
+      char c2 = v[i + 1].second;
+
+      if (v[i].first == 0 || v[i + 1].first == 0) continue;
+
+      // try c1 → c2
+      if (valid(s, c1)) {
+        s.push_back(c1);
+        if (c1 == 'R') r--; else if (c1 == 'G') g--; else b--;
+
+        if (valid(s, c2)) {
+          s.push_back(c2);
+          if (c2 == 'R') r--; else if (c2 == 'G') g--; else b--;
+        }
+        placed = true;
+        break;
+      }
+
+      // try c2 → c1
+      if (valid(s, c2)) {
+        s.push_back(c2);
+        if (c2 == 'R') r--; else if (c2 == 'G') g--; else b--;
+
+        if (valid(s, c1)) {
+          s.push_back(c1);
+          if (c1 == 'R') r--; else if (c1 == 'G') g--; else b--;
+        }
+        placed = true;
+        break;
+      }
+    }
+
+    if (placed) continue;
+
+    // fallback: single placement
+    bool single = false;
+    for (auto &[cnt, c] : v) {
+      if (cnt == 0) continue;
+      if (valid(s, c)) {
+        s.push_back(c);
+        if (c == 'R') r--; else if (c == 'G') g--; else b--;
+        single = true;
+        break;
+      }
+    }
+
+    if (!single) break;
+  }
+
+  cout << s << '\n';
 }
 
 signed main()
@@ -29,7 +98,7 @@ signed main()
   ios_base::sync_with_stdio(false);
   cin.tie(0);
   cout.tie(0);
-  // test
+  test
   yash();
   return 0;
 }
