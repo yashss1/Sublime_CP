@@ -27,8 +27,10 @@ void yash()
 	}
 
 	sort(all(v));
+	
 	int t = q + v[0];
 	cout << min(t, p) << '\n';
+
 }
 
 signed main()
